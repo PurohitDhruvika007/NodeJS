@@ -74,9 +74,25 @@ server.delete("/:id", (req, res) => {
 server.put("/:id", (req, res) => {
     let todos = readData();
     const id = req.params.id;
-    const todo = todos.find((todo) => todo.id == id);
 
-})
+    // find index of todo
+    const index = todos.findIndex(todo => todo.id == id);
+
+    if (index === -1) {
+        return res.status(404).json({ message: "Todo not found" });
+    }
+
+    // merge old + new data
+    todos[index] = {
+        ...todos[index],  // old data
+        ...req.body       // new data (title, status, dueDate, etc.)
+    };
+
+    writeData(todos);
+
+    res.json(todos);
+});
+
 
 server.listen(PORT, () => {
     console.log(`server started successfully on http://localhost:${PORT}`);

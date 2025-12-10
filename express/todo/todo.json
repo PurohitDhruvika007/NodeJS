@@ -1,18 +1,1 @@
-[
-    {
-        "id": 2,
-        "title": "Buy groceries",
-        "description": "Purchase vegetables, fruits, and milk from the supermarket.",
-        "status": "completed",
-        "dueDate": "2025-02-05",
-        "createdAt": "2025-02-01T14:45:00Z"
-    },
-    {
-        "id": 1,
-        "title": "Finish Express API Project",
-        "description": "Complete all CRUD routes and test them in Postman.",
-        "status": "pending",
-        "dueDate": "2025-01-15",
-        "createdAt": "2025-01-10T09:30:00Z"
-    }
-]
+[{"id":2,"title":"Buy groceries","description":"Purchase vegetables, fruits, and milk from the supermarket.","status":"completed","dueDate":"2025-02-05","createdAt":"2025-02-01T14:45:00Z"},{"id":6,"title":"Buy groceries","description":"purchase fruits, and milk from the supermarket.","status":"completed","dueDate":"2025-02-05","createdAt":"2025-02-01T14:45:00Z"},{"id":3,"title":"Prepare for math exam","description":"Revise algebra, calculus, and previous year question papers.","status":"pending","dueDate":"2025-03-10","createdAt":"2025-02-20T11:15:00Z"}]
