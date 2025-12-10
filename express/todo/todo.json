@@ -1,0 +1,18 @@
+[
+    {
+        "id": 2,
+        "title": "Buy groceries",
+        "description": "Purchase vegetables, fruits, and milk from the supermarket.",
+        "status": "completed",
+        "dueDate": "2025-02-05",
+        "createdAt": "2025-02-01T14:45:00Z"
+    },
+    {
+        "id": 1,
+        "title": "Finish Express API Project",
+        "description": "Complete all CRUD routes and test them in Postman.",
+        "status": "pending",
+        "dueDate": "2025-01-15",
+        "createdAt": "2025-01-10T09:30:00Z"
+    }
+]
