@@ -17,13 +17,23 @@ server.use(express.json())
 
 const readData = () => {
     let data = fs.readFileSync(filePath, "utf8")
-    return data;
+    return JSON.parse(data);
+}
+const writeData = (users) => {
+    fs.writeFileSync(filePath, JSON.stringify(users))
 }
 
 // use to read data 
 server.get("/", (req, res) => {
     let data = readData();
-    res.json(JSON.parse(data))
+    res.json(data)
+})
+
+server.get("/:id", (req, res) => {
+    let data = readData();
+    let id = req.params.id;
+    data = data.filter((d) => d.id == id)
+    res.json(data)
 })
 
 // use to add data 
@@ -31,9 +41,31 @@ server.get("/", (req, res) => {
 server.post("/", (req, res) => {
     const users = readData();
     users.push(req.body)
-    fs.writeFileSync(filePath, JSON.stringify(users))
-
+    writeData(users);
+    res.json(users);
 })
+
+server.delete("/:id", (req, res) => {
+    let data = readData();
+    let id = req.params.id;
+    data = data.filter((ele) => ele.id != id);
+    writeData(data);
+    res.json(data);
+})
+
+server.put(":/id", (req, res) => {
+    let id = req.params.id;
+    let data = readData();
+
+    let index = data.find((ele) => ele.id == id)
+    data[index] = {
+        ...data[index],
+        ...req.body
+    }
+    writeData(data)
+    res.json(data)
+})
+
 
 server.listen(PORT, () => {
     console.log(`server connected successfully on http://localhost:${PORT} `)
