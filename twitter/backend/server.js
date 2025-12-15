@@ -39,11 +39,23 @@ app.post("/", (req, res) => {
 app.put("/:id", (req, res) => {
     let data = ReadData();
     let id = req.params.id;
-    let index = data.find(ele => ele.id == id)
+    let index = data.findIndex((ele) => ele.id == id)
+    if (index === -1) {
+        return res.status(404).json({ message: "ID not found" });
+    }
     data[index] = {
         ...data[index],
         ...req.body
     }
+
+    WriteData(data);
+    res.json(data);
+})
+
+app.delete("/:id", (req, res) => {
+    let id = req.params.id;
+    let data = ReadData();
+    data = data.filter(ele => ele.id != id);
     WriteData(data);
     res.json(data);
 })
