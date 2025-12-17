@@ -1,6 +1,6 @@
 <h1 align="center">Twitter UI Clone (React + Express CRUD)</h1>
 
-<p align="center">
+<p>
   A Twitter-like web application built using <b>React</b> and <b>Express.js</b>,
   focusing on clean UI, layout accuracy, and full CRUD functionality.
 </p>
@@ -19,6 +19,9 @@
 </ul>
 
 <h2>🛠️ Tech Stack</h2>
+
+
+
 
 <h3>Frontend</h3>
 <ul>
@@ -97,6 +100,7 @@ npm run dev
 
 <h2>🎥 video</h2>
 
+https://github.com/user-attachments/assets/078aff19-8176-4bda-b8e9-17e46e975080
 
 
 
