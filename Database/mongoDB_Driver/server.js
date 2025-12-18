@@ -16,22 +16,45 @@ const connectData = async () => {
 
 
 const add_student = async () => {
-    const db = await connectData();
-    const result = await db.collection("user").insertOne({
-        name: "arpita",
+    const data = await connectData();
+    const result = await data.collection("user").insertOne({
+        name: "palak",
         gender: "female",
-        email: "arpita12@gmail.com"
-    })
-    console.log("data added")
-    return result;
-
+        email: "palak76@gmail.com"
+    });
+    console.log("data added successfully");
+    return result
 }
 
 const getUsers = async () => {
-    const db = await connectData();
-    const users = await db.collection("user").find().toArray();
-    console.log("Users:", users);
+    const data = await connectData();
+    const user = await data.collection("user").find().toArray();
+    console.log("users:", user)
 };
 
+const deleteUser = async () => {
+    const data = await connectData();
+    const user = await data.collection("user").find().toArray();
+    await data.collection("user").deleteOne({
+        _id: user[0]._id
+    })
+    console.log(user[0]._id.toJSON(), " data deleted successfully");
+
+}
+
+const updateUser = async () => {
+    const data = await connectData();
+    const user = await data.collection("user").find().toArray();
+    await data.collection("user").updateOne({
+        _id: user[0]._id,
+
+    }, {
+        $set: { name: "jyoti", email: "jyoti32@gmail.com" }
+    });
+    console.log(user[0]._id, "data is updated");
+}
+
+updateUser()
+// deleteUser()
 // add_student()
 getUsers()
