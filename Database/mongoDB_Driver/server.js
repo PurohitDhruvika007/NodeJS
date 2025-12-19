@@ -29,7 +29,7 @@ const add_student = async () => {
 const getUsers = async () => {
     const data = await connectData();
     const user = await data.collection("user").find().toArray();
-    console.log("users:", user)
+    return user;
 };
 
 const deleteUser = async () => {
@@ -49,12 +49,35 @@ const updateUser = async () => {
         _id: user[0]._id,
 
     }, {
-        $set: { name: "jyoti", email: "jyoti32@gmail.com" }
+        $set: { name: "reeti", email: "reeti32@gmail.com" }
     });
     console.log(user[0]._id, "data is updated");
 }
 
-updateUser()
+app.get("/", async (req, res) => {
+    const user = await getUsers();
+    res.json(user);
+})
+app.post("/", async (req, res) => {
+    await add_student();
+    const data = await getUsers();
+    res.json(data);
+})
+app.put("/", async (req, res) => {
+    await updateUser();
+    const data = await getUsers();
+    res.json(data);
+})
+app.delete("/", async (req, res) => {
+    await deleteUser();
+    const data = await getUsers();
+    res.json(data);
+})
+app.listen(4000, () => {
+    console.log("server get live on http://localhost:4000/")
+})
+
+// updateUser()
 // deleteUser()
 // add_student()
-getUsers()
+// getUsers()
