@@ -18,25 +18,48 @@ const companySchema = new mongoose.Schema({
 
 const Company = mongoose.model("company", companySchema)
 
-const addCompany = () => {
-    const company = new Company(
-        {
-            name: "abc",
-            year: 2002,
-            owner: "reem",
-            netWorth: 10000000
-        }
-    )
-    company.save();
+const addCompany = async (data) => {
+    const company = new Company(data)
+    let result = await company.save();
+    return result;
 
+}
+const readData = async () => {
+    const result = await Company.find()
+    return result;
+}
+
+const deleteCompany = async (id) => {
+    const result = await Company.deleteOne({ _id: id });
+    return result;
+}
+
+const updateCompany = async (id, data) => {
+    const result = await Company.updateOne({ _id: id }, { $set: data });
+    return result;
 }
 
 connectData();
 app.post("/", async (req, res) => {
-    addCompany();
-})
+    const data = await addCompany(req.body);
+    res.json({ msg: "data inserted successfully", data: data });
+});
 app.get("/", async (req, res) => {
+    const data = await readData();
+    res.json(data);
+})
+app.delete("/:id", async (req, res) => {
+    const id = req.params.id;
+    await deleteCompany(id);
+    const data = await readData();
+    res.json({ msg: "data deleted successfully", data: data });
+})
 
+app.put("/:id", async (req, res) => {
+    const id = req.params.id;
+    const data = req.body;
+    const result = updateCompany(id, data)
+    res.json({ msg: "data updated successfully", data: result });
 })
 app.listen(PORT, () => {
     console.log(`server connected successfully on http://localhost:${PORT}/`);
