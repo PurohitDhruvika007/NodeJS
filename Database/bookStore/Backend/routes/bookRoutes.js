@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/", readBook);
 router.post("/", addBook);
-router.put("/", updateBook);
-router.delete("/", deleteBook);
+router.put("/:id", updateBook);
+router.delete("/:id", deleteBook);
 
 export default router;

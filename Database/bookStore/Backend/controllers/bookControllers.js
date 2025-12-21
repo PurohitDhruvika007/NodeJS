@@ -13,7 +13,7 @@ export const addBook = async (req, res) => {
 
 export const readBook = async (req, res) => {
     try {
-        const data = await model.find().toArray();
+        const data = await model.find();
         res.status(200).json(data);
     }
     catch (err) {
