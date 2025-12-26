@@ -70,15 +70,15 @@ app.delete("/:id", async (req, res) => {
     res.json({ message: "data deleted successfully" });
 })
 
-app.put("/:id", async (req, res) => {
+app.put("/:id", upload.single("image"), async (req, res) => {
     const id = req.params.id;
     const students = await Student.findById(id);
     const updatePath = path.join(__dirname, students.imageUrl);
     if (fs.existsSync(updatePath)) {
         fs.unlinkSync(updatePath)
-        updatePath = req.file;
+        students.imageUrl = "/uploads/" + req.file.filename;
     }
-    await Student.findByIdAndUpdate(id);
+    await students.save();
     res.json({ message: "data updated successfully" });
 })
 
