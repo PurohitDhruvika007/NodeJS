@@ -1,18 +1,19 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router';
+import "./UpdateMovie.css";
 
 export default function UpdateMovie() {
     const navigate = useNavigate();
     const location = useLocation();
     const movie = location.state;
+
     const [title, setTitle] = useState(movie?.title || "");
     const [description, setDescription] = useState(movie?.description || "");
     const [genre, setGenre] = useState(movie?.genre || "");
     const [year, setYear] = useState(movie?.released_year || "");
-    const [poster, setPoster] = useState(null);           // new file
+    const [poster, setPoster] = useState(null);
     const [currentPoster, setCurrentPoster] = useState(movie?.poster || "");
-
 
     const handleUpdate = async () => {
         const formdata = new FormData();
@@ -21,42 +22,86 @@ export default function UpdateMovie() {
         formdata.append("genre", genre);
         formdata.append("released_year", year);
         formdata.append("poster", poster);
+
         axios.put(`http://localhost:4000/api/${movie._id}`, formdata);
         alert("movie updated successfully!");
         navigate("/");
     }
+
     return (
-        <div>
-            <h1>update movie</h1>
-            <img
-                src={
-                    poster instanceof File
-                        ? URL.createObjectURL(poster)          // new file preview
-                        : currentPoster                         // existing image
-                            ? "http://localhost:4000/uploads/" + currentPoster
-                            : null
-                }
-                alt="poster"
-                width="150"
-            />
-            <div>
-                <input type="text" placeholder="enter the title.." value={title} onChange={(e) => setTitle(e.target.value)} />
+        <div className="add-page">
+
+            <div className="add-card">
+                <h2>Update Movie</h2>
+
+                {/* Poster Preview */}
+                <div className="poster-preview">
+                    {(poster || currentPoster) ? (
+                        <img
+                            src={
+                                poster instanceof File
+                                    ? URL.createObjectURL(poster)
+                                    : "http://localhost:4000/uploads/" + currentPoster
+                            }
+                            alt="poster"
+                        />
+                    ) : (
+                        <span>Poster Preview</span>
+                    )}
+                </div>
+
+                <div className="form-group">
+                    <label>Title</label>
+                    <input
+                        type="text"
+                        placeholder="Enter movie title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Genre</label>
+                    <input
+                        type="text"
+                        placeholder="Enter genre"
+                        value={genre}
+                        onChange={(e) => setGenre(e.target.value)}
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Release Year</label>
+                    <input
+                        type="text"
+                        placeholder="Enter release year"
+                        value={year}
+                        onChange={(e) => setYear(e.target.value)}
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Description</label>
+                    <textarea
+                        placeholder="Enter description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Change Poster</label>
+                    <input
+                        type="file"
+                        onChange={(e) => setPoster(e.target.files[0])}
+                    />
+                </div>
+
+                <button className="submit-btn" onClick={handleUpdate}>
+                    Update Movie
+                </button>
             </div>
-            <div>
-                <input type="text" placeholder='enter the genre' value={genre} onChange={(e) => setGenre(e.target.value)} />
-            </div>
-            <div>
-                <input type="text" placeholder='enter the released year' value={year} onChange={(e) => setYear(e.target.value)} />
-            </div>
-            <div>
-                <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder='enter the description'></textarea>
-            </div>
-            <div>
-                <input type="file" onChange={(e) => setPoster(e.target.files[0])} />
-            </div>
-            <div>
-                <button onClick={handleUpdate}>Update movie</button>
-            </div>
+
         </div>
     )
 }

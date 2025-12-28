@@ -1,0 +1,87 @@
+/* Page */
+.add-page {
+    background: #f8fafc;
+    min-height: 100vh;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Card */
+.add-card {
+    width: 100%;
+    max-width: 460px;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 24px 26px;
+    border: 1px solid #e5e7eb;
+}
+
+.add-card h2 {
+    margin-bottom: 18px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* Poster Preview */
+.poster-preview {
+    height: 220px;
+    background: #f1f5f9;
+    border: 1px dashed #cbd5f5;
+    border-radius: 8px;
+    margin-bottom: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.poster-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Form */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    font-size: 13px;
+    margin-bottom: 4px;
+    color: #374151;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 9px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #cbd5f5;
+    outline: none;
+}
+
+.form-group textarea {
+    resize: none;
+    height: 70px;
+}
+
+/* Button */
+.submit-btn {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    background: #0f172a;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}

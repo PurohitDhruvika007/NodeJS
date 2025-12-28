@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router';
+import "./AddMovie.css";
 
 export default function AddMovie() {
     const [title, setTitle] = useState("");
@@ -24,29 +25,73 @@ export default function AddMovie() {
     }
 
     return (
-        <div>
-            <h1>add movie</h1>
-            <img src={poster ? URL.createObjectURL(poster) : ""} alt="" />
-            <div>
-                <input type="text" placeholder="enter the title.." value={title} onChange={(e) => setTitle(e.target.value)} />
+        <div className="add-page">
+
+            <div className="add-card">
+                <h2>Add New Movie</h2>
+
+                {/* Poster Preview */}
+                <div className="poster-preview">
+                    {poster ? (
+                        <img src={URL.createObjectURL(poster)} alt="preview" />
+                    ) : (
+                        <span>Poster Preview</span>
+                    )}
+                </div>
+
+                {/* Form */}
+                <div className="form-group">
+                    <label>Title</label>
+                    <input
+                        type="text"
+                        placeholder="Enter movie title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Genre</label>
+                    <input
+                        type="text"
+                        placeholder="Enter genre"
+                        value={genre}
+                        onChange={(e) => setGenre(e.target.value)}
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Release Year</label>
+                    <input
+                        type="text"
+                        placeholder="Enter release year"
+                        value={year}
+                        onChange={(e) => setYear(e.target.value)}
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Description</label>
+                    <textarea
+                        placeholder="Enter description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Poster</label>
+                    <input
+                        type="file"
+                        onChange={(e) => setPoster(e.target.files[0])}
+                    />
+                </div>
+
+                <button className="submit-btn" onClick={handleSubmit}>
+                    Add Movie
+                </button>
             </div>
 
-            <div>
-                <input type="text" placeholder='enter the genre' value={genre} onChange={(e) => setGenre(e.target.value)} />
-            </div>
-            <div>
-                <input type="text" placeholder='enter the released year' value={year} onChange={(e) => setYear(e.target.value)} />
-            </div>
-            <div>
-                <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder='enter the description'></textarea>
-            </div>
-            <div>
-                <input type="file" onChange={(e) => setPoster(e.target.files[0])} />
-            </div>
-
-            <div>
-                <button onClick={handleSubmit}>Add movie</button>
-            </div>
         </div>
     )
 }

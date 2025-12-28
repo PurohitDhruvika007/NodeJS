@@ -1,16 +1,16 @@
-import React from 'react'
-import { Link } from 'react-router'
+import React from "react";
+import { Link } from "react-router";
+import "./Navbar.css";
 
-
-export default function
-    () {
+export default function () {
     return (
-        <div>
-            <h1>Movie Manager</h1>
-            <nav>
-                <Link to="/add">add movie</Link>
-                <Link to="/">movie list</Link>
+        <header className="navbar">
+            <div className="logo">MovieManager</div>
+
+            <nav className="nav-links">
+                <Link to="/" className="link">Movies</Link>
+                <Link to="/add" className="add-btn">Add Movie</Link>
             </nav>
-        </div>
-    )
+        </header>
+    );
 }
