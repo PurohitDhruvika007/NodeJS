@@ -33,6 +33,13 @@ This app allows users to **add, view, update, delete, and search movies** with p
 - Navigation without page reloads
 
 ---
+## 🖼 Image Access
+
+Uploaded poster images are served statically from the backend:
+
+http://localhost:4000/uploads/<image_name>
+
+---
 
 ## ⚙️ Installation & Setup
 
@@ -59,6 +66,20 @@ npm run dev
 Frontend runs at:
 http://localhost:5173
 
+
+---
+## 🔌 API Endpoints
+
+Base URL:
+http://localhost:4000/api/movies
+
+| Method | Endpoint | Description |
+|------|---------|------------|
+| POST | `/` | Add a new movie |
+| GET | `/` | Get all movies |
+| GET | `/:id` | Get movie by ID |
+| PUT | `/:id` | Update movie |
+| DELETE | `/:id` | Delete movie |
 
 ---
 
@@ -127,4 +148,7 @@ movie-manager/
 └── README.md
 </pre>
 
-## 🎥 vedio
+## 🎥 video
+
+https://github.com/user-attachments/assets/d51cba87-4d19-45c5-9eef-7a462c6a752d
+
