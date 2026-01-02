@@ -1,9 +1,23 @@
 import { Auth } from "../models/AuthModels.js";
 import { homePath, signInPath, signUpPath } from "../server.js";
+import bcrypt from "bcrypt";
 
 export const signUp = async (req, res) => {
     try {
-        const result = await Auth.create(req.body);
+        const { email, password, name, phone } = req.body;
+        const exist = await Auth.findOne({ email });
+        if (exist) {
+            return res.json("user already exists");
+        }
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const result = await Auth.create(
+            {
+                email,
+                name,
+                phone,
+                password: hashedPassword
+            }
+        )
         res.json({ message: "user sign in successfull", result });
     }
     catch (err) {
@@ -17,10 +31,11 @@ export const signIn = async (req, res) => {
         if (!user) {
             return res.json({ message: "first sign up" });
         }
-        if (!(user.password == password)) {
+        const isMatch = bcrypt.compare(password, user.password);
+        if (!isMatch) {
+
             return res.json({ message: "enter valid credential" });
         }
-
 
         res.cookie("auth_token", true, { maxAge: 1000 * 60 * 60, httpOnly: true });
 
