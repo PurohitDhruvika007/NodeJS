@@ -2,6 +2,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import Router from "./routes/AuthRoutes.js";
 import { connectDB } from "./config/db.js";
+import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -15,6 +16,7 @@ const PORT = 4000;
 connectDB();
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
 app.use("/", Router);
 app.listen(PORT, () => {
     console.log(`server started successfully at http://localhost:${PORT}`);

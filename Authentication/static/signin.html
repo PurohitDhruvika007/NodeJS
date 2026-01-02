@@ -3,13 +3,55 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=
-    , initial-scale=1.0">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
 </head>
 
 <body>
-    <h1>Sign in page</h1>
+
+    <h1>Sign In Page</h1>
+
+    <input type="email" id="email" placeholder="Enter email" /><br><br>
+    <input type="password" id="password" placeholder="Enter password" /><br><br>
+
+    <button onclick="handleSignIn()">Sign In</button>
+
+    <script>
+        const handleSignIn = async () => {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            if (!email || !password) {
+                alert("All fields are required");
+                return;
+            }
+
+            try {
+                const response = await fetch("/api/signin", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password
+                    })
+                });
+
+                const data = await response.json();
+                alert(data.message);
+
+                if (data.message === "user sign in successfully") {
+                    window.location.href = "/home";
+                }
+
+            } catch (error) {
+                console.error(error);
+                alert("Signin failed");
+            }
+        };
+    </script>
+
 </body>
 
 </html>

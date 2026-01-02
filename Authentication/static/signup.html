@@ -3,13 +3,52 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=
-    , initial-scale=1.0">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
 </head>
 
 <body>
-    <h1>Sign up page</h1>
+
+    <h1>Sign Up Page</h1>
+
+    <input type="text" id="name" placeholder="Enter name" /><br><br>
+    <input type="email" id="email" placeholder="Enter email" /><br><br>
+    <input type="password" id="password" placeholder="Enter password" /><br><br>
+    <input type="text" id="phone" placeholder="Enter phone number" /><br><br>
+
+    <button onclick="handleSubmit()">Sign Up</button>
+
+    <script>
+        const handleSubmit = async () => {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const phone = document.getElementById("phone").value;
+
+            try {
+                const response = await fetch("http://localhost:4000/api/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ name, email, password, phone })
+                });
+
+                const data = await response.json();
+                alert(data.message);
+
+                if (data.result) {
+                    window.location.href = "http://localhost:4000/signin";
+                }
+
+            } catch (error) {
+                console.error(error);
+                alert("Signup failed");
+            }
+        };
+    </script>
+
+
 </body>
 
 </html>
