@@ -4,8 +4,8 @@ import bcrypt from "bcrypt";
 export const signup = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const hashedPassword = bcrypt.hash(password, 10);
-        const result = Auth.create({ email, password: hashedPassword });
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const result = await Auth.create({ email, password: hashedPassword });
         res.json({ message: "user registered successfully", result });
     }
     catch (err) {
@@ -15,5 +15,11 @@ export const signup = async (req, res) => {
 export const signin = async (req, res) => {
     res.json({ message: "user signin successfully", user: req.user })
 }
-export const signout = async (req, res) => { }
-export const homepage = async (req, res) => { }
+export const signout = async (req, res) => {
+    req.logout(() => {
+        res.json({ message: "sign out successfully" });
+    })
+}
+export const homepage = async (req, res) => {
+    res.json({ message: "welcome to home page", user: req.user })
+}
