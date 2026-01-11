@@ -5,18 +5,22 @@ import { sendEmail } from "../utils/SendEmail.js";
 export const sendOTP = async (req, res) => {
     try {
         const { email } = req.body;
+
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
+        if (user.isVerified) {
+            return res.status(400).json({ message: "User already verified" });
+        }
+
         const otp = generateOTP();
 
         user.otp = otp;
-        user.otpExpiry = Date.now() + 5 * 60 * 1000;
+        user.otpExpiry = new Date(Date.now() + 5 * 60 * 1000);
         await user.save();
 
-        // send otp via email
         await sendEmail(
             email,
             "Your OTP for Blog Management System",
@@ -28,6 +32,7 @@ export const sendOTP = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 
 export const verifyOTP = async (req, res) => {

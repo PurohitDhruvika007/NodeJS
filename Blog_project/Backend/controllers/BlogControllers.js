@@ -7,7 +7,7 @@ export const addBlog = async (req, res) => {
             title,
             content,
             image: req.file ? `/uploads/${req.file.filename}` : null,
-            author: req.user.id
+            author: req.user.id  // <-- must be logged-in user id
         });
         res.json({ message: "blog added successfully !!", blog });
     }

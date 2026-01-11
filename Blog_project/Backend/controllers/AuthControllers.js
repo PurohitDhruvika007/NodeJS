@@ -31,6 +31,9 @@ export const signIn = async (req, res) => {
         if (!user) {
             return res.json({ message: "user not found , first register" });
         }
+        if (!user.isVerified) {
+            return res.status(401).json({ message: "Please verify OTP first" });
+        }
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.json({ message: "password is incorrect" });
@@ -41,7 +44,8 @@ export const signIn = async (req, res) => {
             secure: false,
             maxAge: 1000 * 60 * 60 * 24
         })
-        res.json({ message: "user login successfully", user });
+        res.json({ message: "Login successful" });
+
     }
     catch (err) {
         res.json({ message: "user not login !!", err });
@@ -50,7 +54,7 @@ export const signIn = async (req, res) => {
 
 export const logout = async (req, res) => {
     try {
-        req.clearCookie("token");
+        res.clearCookie("token");
         res.json({ message: "logout successfully" })
     }
     catch (err) {
