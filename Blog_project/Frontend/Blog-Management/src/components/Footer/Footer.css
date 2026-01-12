@@ -1,0 +1,25 @@
+.footer {
+    margin-top: 60px;
+    padding: 30px 0;
+    background: linear-gradient(135deg, #213448, #547792);
+    text-align: center;
+    box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.footer-content h3 {
+    color: #EAE0CF;
+    font-size: 22px;
+    margin-bottom: 6px;
+}
+
+.footer-content p {
+    color: #94B4C1;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.footer-content span {
+    color: #F4CE14;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}

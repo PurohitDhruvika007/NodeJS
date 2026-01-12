@@ -1,0 +1,63 @@
+.navbar {
+    background-color: #213448;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    color: #EAE0CF;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: #EAE0CF;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #94B4C1;
+}
+
+.create-btn {
+    background-color: #94B4C1;
+    color: #213448 !important;
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.register-btn {
+    border: 1px solid #94B4C1;
+    padding: 7px 14px;
+    border-radius: 20px;
+}
+
+.logout-btn {
+    background: transparent;
+    border: 1px solid #EAE0CF;
+    color: #EAE0CF;
+    padding: 7px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+}

@@ -1,0 +1,61 @@
+.home-wrapper {
+    min-height: 100vh;
+    background: #f7f9fb;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HERO SECTION */
+.home-hero {
+    background: linear-gradient(135deg, #213448, #547792);
+    color: white;
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.home-hero h1 {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.home-hero p {
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+/* BLOG SECTION */
+.blog-section {
+    padding: 60px 8%;
+}
+
+.blog-section h2 {
+    text-align: center;
+    color: #213448;
+    margin-bottom: 35px;
+    font-size: 28px;
+}
+
+/* BLOG GRID */
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+/* STATUS MESSAGES */
+.status-msg {
+    text-align: center;
+    font-size: 16px;
+    color: #547792;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .home-hero h1 {
+        font-size: 32px;
+    }
+
+    .blog-section {
+        padding: 40px 5%;
+    }
+}
