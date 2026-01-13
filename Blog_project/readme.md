@@ -120,5 +120,9 @@ blog-management-system
 │
 └── README.md
 </pre>
-## 🎥 vedio
+## 🎥 video
+
+
+
+https://github.com/user-attachments/assets/4d274e16-a49a-45dc-b1ca-95b3f6f5b1fb
 
