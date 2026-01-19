@@ -51,7 +51,7 @@ export const verifyOTP = async (req, res) => {
     await OtpCollection.deleteMany({ email });
     try {
         const user = await AuthCollection.findOne({ email });
-        const token = jwt.sign(user, process.env.SECRET_KEY, {
+        const token = jwt.sign({ user: user._id }, process.env.SECRET_KEY, {
             expiresIn: "1h"
         });
         res.cookie("auth_token", token, {

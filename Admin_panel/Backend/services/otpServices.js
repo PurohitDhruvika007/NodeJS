@@ -6,7 +6,7 @@ dotenv.config();
 const transport = nodemailer.createTransport({
     service: "gmail",
     auth: {
-        email: process.env.EMAIL,
+        user: process.env.EMAIL,
         pass: process.env.PASS
     }
 });
@@ -16,8 +16,8 @@ export const sendOTP = async (email) => {
     const expiry = new Date(Date.now() + 1000 * 60 * 2);
     try {
         await OtpCollection.create({ email, otp, expiry });
-        await transport.sendOTP({
-            from: process.env.EMAIL,
+        await transport.sendMail({
+            from: `OTP <${process.env.EMAIL}>`,
             to: email,
             subject: "OTP verification",
             text: `your OTP is ${otp} ,expires in 2 minutes`
