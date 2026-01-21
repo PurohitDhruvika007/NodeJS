@@ -30,7 +30,7 @@ export const signin = async (req, res) => {
     if (!isMatch) {
         return res.json({ status: false, message: "password is incorrect" });
     }
-    const status = sendOTP(email);
+    const status = await sendOTP(email);
     if (status) {
         res.json({ status: true, message: "OTP sent successfully" });
     }
@@ -83,3 +83,67 @@ export const checkLoginStatus = async (req, res) => {
         res.json({ status: false, message: "login first" });
     }
 }
+
+export const changePassword = async (req, res) => {
+    const { email, oldPassword, newPassword } = req.body;
+    try {
+        const user = await AuthCollection.findOne({ email });
+        if (!user) {
+            return res.json({ status: false, message: "user not found" });
+        }
+        const isMatch = await bcrypt.compare(oldPassword, user.password)
+        if (!isMatch) {
+            return res.json({ status: false, message: "password is incorrect" });
+        }
+        const hashed = await bcrypt.hash(newPassword, 12);
+        await AuthCollection.updateOne({ email }, {
+            $set: {
+                password: hashed
+            }
+        })
+        res.json({ status: true, message: "password changed successfully" });
+    }
+    catch (err) {
+        res.json({ status: false, message: err.message })
+    }
+}
+
+
+export const forgetPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await AuthCollection.findOne({ email });
+        if (!user) {
+            return res.json({ status: false, message: "user not found" });
+        }
+        const status = await sendOTP(email);
+        res.json(status)
+    }
+    catch (err) {
+        res.json({ status: false, message: err.message });
+    }
+}
+
+export const changeForgetPassword = async (req, res) => {
+    const { email, otp, password } = req.body;
+    try {
+        const result = await OtpCollection.findOne({ email, otp });
+        if (!result) {
+            return res.json({ status: false, message: "user not found" });
+        }
+        if (result.expiry < new Date(Date.now())) {
+            return res.json({ status: false, message: "otp expired!" });
+        }
+        const hashed = await bcrypt.hash(password, 12);
+        await AuthCollection.updateOne({ email }, {
+            $set: {
+                password: hashed
+            }
+        })
+        res.json({ status: true, message: "password changed successfully" });
+    }
+    catch (err) {
+        res.json({ status: false, message: err.message });
+    }
+}
+
