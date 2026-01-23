@@ -58,7 +58,7 @@ export const verifyOTP = async (req, res) => {
             httpOnly: true,
             maxAge: 1000 * 60 * 60
         })
-        res.json({ status: true, message: "OTP sent successfully" });
+        res.json({ status: true, message: "OTP verified successfully" });
     }
     catch (err) {
         res.json({ status: false, message: "OTP verification failed" })
