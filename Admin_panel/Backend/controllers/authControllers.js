@@ -11,6 +11,10 @@ export const signup = async (req, res) => {
     const { email, password } = req.body;
 
     try {
+        const user = await AuthCollection.findOne({ email });
+        if (user) {
+            return res.json({ status: false, message: "user already exist" });
+        }
         const hashed = await bcrypt.hash(password, 12);
         await AuthCollection.create({ email, password: hashed });
         res.json({ status: true, message: "registered successfully!!" });
@@ -57,7 +61,8 @@ export const verifyOTP = async (req, res) => {
         res.cookie("auth_token", token, {
             httpOnly: true,
             maxAge: 1000 * 60 * 60
-        })
+        });
+
         res.json({ status: true, message: "OTP verified successfully" });
     }
     catch (err) {
@@ -77,7 +82,12 @@ export const checkLoginStatus = async (req, res) => {
             return res.json({ status: false, message: "sign out" });
         }
         const decoded = jwt.verify(token, process.env.SECRET_KEY, { expiresIn: "1h" });
-        res.json({ status: true, message: "already login", user: decoded.payload });
+        res.json({
+            status: true,
+            message: "already login",
+            user: decoded.user
+        });
+
     }
     catch (err) {
         res.json({ status: false, message: "login first" });
