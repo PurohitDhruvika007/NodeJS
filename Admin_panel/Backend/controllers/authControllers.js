@@ -127,7 +127,9 @@ export const forgetPassword = async (req, res) => {
             return res.json({ status: false, message: "user not found" });
         }
         const status = await sendOTP(email);
-        res.json(status)
+        if (status) {
+            res.json({ status: true, message: "otp sent successfully" })
+        }
     }
     catch (err) {
         res.json({ status: false, message: err.message });

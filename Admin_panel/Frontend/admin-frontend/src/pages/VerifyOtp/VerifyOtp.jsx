@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
+import OTPInput from "otp-input-react";
 import { Base_auth_url } from '../../utils/globalVariable.js';
 
 export default function VerifyOtp() {
@@ -16,15 +17,17 @@ export default function VerifyOtp() {
             return;
         }
 
-        const check = { ...user, otp };
+        const check = { ...user, otp: Number(otp) };
         const res = await axios.post(
             `${Base_auth_url}/verifyOtp`,
             check,
             { withCredentials: true }
         );
 
-        alert(res.data.message);
-
+        if (res.data.status) {
+            alert(res.data.message);
+            navigate("/home", { replace: true })
+        }
 
     };
 
@@ -43,13 +46,9 @@ export default function VerifyOtp() {
             <div className='col-4 border rounded p-4 shadow'>
                 <h1 className='text-center'>Verify OTP</h1>
 
-                <input
-                    type="number"
-                    className="form-control mb-3"
-                    placeholder="OTP"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                />
+                <div className='my-4'>
+                    <OTPInput value={otp} onChange={setOtp} autoFocus OTPLength={6} otpType="number" disabled={false} secure />
+                </div>
 
                 <button className='btn btn-primary w-100' onClick={handleVerifyOtp}>
                     Verify
