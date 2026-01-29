@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose, { model } from "mongoose"
 
 const userSchema = new mongoose.Schema({
     email: { type: String, unique: true, required: true },
@@ -11,3 +11,4 @@ const userSchema = new mongoose.Schema({
     experience: { type: String, required: true },
 }, { timestamps: true })
 
+export const UserCollection = mongoose.model("users", userSchema)

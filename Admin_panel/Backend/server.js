@@ -1,7 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import router from "./routes/authRoutes.js";
+import authRouter from "./routes/authRoutes.js";
+import userRouter from "./routes/adminRoutes.js"
 import { ConnectDB } from "./config/db.js";
 import cors from "cors";
 
@@ -15,7 +16,8 @@ app.use(cors(
 ));
 app.use(cookieParser());
 app.use(express.json());
-app.use("/api/auth/", router);
+app.use("/api/auth/", authRouter);
+app.user("/api/user/", userRouter);
 ConnectDB();
 app.listen(process.env.PORT, () => {
     console.log("server started successfully");
