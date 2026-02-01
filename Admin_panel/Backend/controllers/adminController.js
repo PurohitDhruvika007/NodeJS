@@ -1,4 +1,8 @@
 import { UserCollection } from "../models/userModels.js";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv"
+
+dotenv.config()
 
 export const getAllUsers = async (req, res) => {
     try {
@@ -32,13 +36,29 @@ export const deleteUser = async (req, res) => {
     }
 }
 
-export const getUser = async (req, res) => {
+export const getCurrentUser = async (req, res) => {
     try {
-        const { email } = req.body;
-        const result = await UserCollection.findOne({ email });
-        res.json({ status: true, message: "user fetched successfully", result });
+        const token = req.cookies.auth_token;
+        if (!token) {
+            return res.json({ status: false, message: "login first" });
+        }
+
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+
+        const user = await UserCollection.findById(decoded.userId);
+
+        if (!user) {
+            return res.json({ status: false, message: "user not found" });
+        }
+
+        res.json({
+            status: true,
+            message: "current user fetched successfully",
+            user
+        });
     }
     catch (err) {
         res.json({ status: false, message: err.message });
     }
-}
+};
+

@@ -7,6 +7,7 @@ import ChangePassword from './pages/ChangePassword/ChangePassword'
 import ForgetPassword from './pages/ForgetPassword/ForgetPassword'
 import VerifyForgetPassword from './pages/VerifyForgetPassword/VerifyForgetPassword'
 import Home from './pages/Home/Home.jsx'
+import Profile from './pages/Profile/Profile.jsx'
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Signin />} />
         <Route path='/home' element={<Home />} />
+        <Route path='/profile' element={<Profile />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/verify-otp' element={<VerifyOtp />} />
         <Route path='/change-password' element={<ChangePassword />} />

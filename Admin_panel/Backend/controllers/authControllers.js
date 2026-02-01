@@ -4,26 +4,45 @@ import { AuthCollection } from "../models/authModels.js";
 import { sendOTP } from "../services/otpServices.js"
 import { OtpCollection } from "../models/otpModels.js";
 import jwt from "jsonwebtoken"
+import { UserCollection } from "../models/userModels.js";
 dotenv.config();
 
 export const signup = async (req, res) => {
-
     const { email, password } = req.body;
 
     try {
-        const user = await AuthCollection.findOne({ email });
-        if (user) {
-            return res.json({ status: false, message: "user already exist" });
+        const existingUser = await AuthCollection.findOne({ email });
+        if (existingUser) {
+            return res.json({
+                status: false,
+                message: "Email already registered"
+            });
         }
+
         const hashed = await bcrypt.hash(password, 12);
-        await AuthCollection.create({ email, password: hashed });
-        res.json({ status: true, message: "registered successfully!!" });
+
+        const user = await UserCollection.create({ email });
+
+        await AuthCollection.create({
+            email,
+            password: hashed,
+            user: user._id
+        });
+
+        res.json({
+            status: true,
+            message: "registered successfully!!"
+        });
     }
     catch (err) {
-        res.json({ status: false, message: "registration failed" });
+        console.error(err);
+        res.json({
+            status: false,
+            message: err.message
+        });
     }
+};
 
-}
 export const signin = async (req, res) => {
     const { email, password } = req.body;
     const user = await AuthCollection.findOne({ email });
@@ -54,10 +73,14 @@ export const verifyOTP = async (req, res) => {
     }
     await OtpCollection.deleteMany({ email });
     try {
-        const user = await AuthCollection.findOne({ email });
-        const token = jwt.sign({ user: user._id }, process.env.SECRET_KEY, {
-            expiresIn: "1h"
-        });
+        const auth = await AuthCollection.findOne({ email });
+
+        const token = jwt.sign(
+            { userId: auth.user },   // ✅ UserCollection _id
+            process.env.SECRET_KEY,
+            { expiresIn: "1h" }
+        );
+
         res.cookie("auth_token", token, {
             httpOnly: true,
             maxAge: 1000 * 60 * 60

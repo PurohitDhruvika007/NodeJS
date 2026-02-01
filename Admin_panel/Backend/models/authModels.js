@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const AuthSchema = new mongoose.Schema({
-    email: String,
+    email: { type: String, unique: true, required: true },
     password: String,
     user: {
         type: mongoose.Schema.Types.ObjectId,

@@ -17,7 +17,7 @@ app.use(cors(
 app.use(cookieParser());
 app.use(express.json());
 app.use("/api/auth/", authRouter);
-app.user("/api/user/", userRouter);
+app.use("/api/user/", userRouter);
 ConnectDB();
 app.listen(process.env.PORT, () => {
     console.log("server started successfully");
