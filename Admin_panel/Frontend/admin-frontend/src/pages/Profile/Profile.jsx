@@ -10,9 +10,7 @@ export default function Profile() {
     const getUser = async () => {
         try {
             const res = await axios.get(`${Base_user_url}/getUser`, { withCredentials: true });
-            console.log(res.data)
             setCurrentUserData(res.data.user);
-            alert(res.data.message);
         }
         catch (err) {
             alert(err.message);
