@@ -27,11 +27,11 @@ export default function Home() {
                         </a>
                     </li>
                     <li>
-                        <a href="#" className="nav-link text-white">
+                        <a href="/add-employees" className="nav-link text-white">
                             <svg className="bi me-2" width={16} height={16}>
                                 <use xlinkHref="#speedometer2" />
                             </svg>
-                            Dashboard
+                            Add Employees
                         </a>
                     </li>
                     <li>

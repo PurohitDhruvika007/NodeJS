@@ -126,7 +126,7 @@ export default function Profile() {
                             <option value="">select the role</option>
                             <option value="Web developer">Web developer</option>
                             <option value="Financer">Financer</option>
-                            <option value="Manager">Manager</option>
+                            <option value="Admin">Admin</option>
                             <option value="HR">HR</option>
                         </select>
 

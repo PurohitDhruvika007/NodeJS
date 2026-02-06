@@ -8,6 +8,8 @@ import ForgetPassword from './pages/ForgetPassword/ForgetPassword'
 import VerifyForgetPassword from './pages/VerifyForgetPassword/VerifyForgetPassword'
 import Home from './pages/Home/Home.jsx'
 import Profile from './pages/Profile/Profile.jsx'
+import CheckLogin from './components/CheckLogin.jsx'
+import AddEmployees from './pages/AddEmployees/AddEmployees.jsx'
 
 function App() {
 
@@ -15,14 +17,15 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path='/' element={<Signin />} />
-        <Route path='/home' element={<Home />} />
-        <Route path='/profile' element={<Profile />} />
+        <Route path='/' element={<CheckLogin><Home /></CheckLogin>} />
+        <Route path='/home' element={<CheckLogin><Home /></CheckLogin>} />
+        <Route path='/profile' element={<CheckLogin><Profile /></CheckLogin>} />
+        <Route path='/add-employees' element={<CheckLogin><AddEmployees /></CheckLogin>} />
         <Route path='/signup' element={<Signup />} />
-        <Route path='/verify-otp' element={<VerifyOtp />} />
-        <Route path='/change-password' element={<ChangePassword />} />
-        <Route path='/forget-password' element={<ForgetPassword />} />
-        <Route path='/verify-forget-password' element={<VerifyForgetPassword />} />
+        <Route path='/verify-otp' element={<CheckLogin><VerifyOtp /></CheckLogin>} />
+        <Route path='/change-password' element={<CheckLogin><ChangePassword /></CheckLogin>} />
+        <Route path='/forget-password' element={<CheckLogin><ForgetPassword /></CheckLogin>} />
+        <Route path='/verify-forget-password' element={<CheckLogin><VerifyForgetPassword /></CheckLogin>} />
       </Routes>
     </>
   )
