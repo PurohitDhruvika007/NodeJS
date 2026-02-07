@@ -8,7 +8,7 @@ export default function CheckLogin({ children }) {
     const getCurrentUser = async () => {
         try {
             const res = await axios.get(`${Base_user_url}/getUser`, { withCredentials: true });
-            if (res.data.status) {
+            if (res.data.user.role == "Admin") {
                 setIsLogin(true);
             }
             else {

@@ -22,10 +22,10 @@ function App() {
         <Route path='/profile' element={<CheckLogin><Profile /></CheckLogin>} />
         <Route path='/add-employees' element={<CheckLogin><AddEmployees /></CheckLogin>} />
         <Route path='/signup' element={<Signup />} />
-        <Route path='/verify-otp' element={<CheckLogin><VerifyOtp /></CheckLogin>} />
-        <Route path='/change-password' element={<CheckLogin><ChangePassword /></CheckLogin>} />
-        <Route path='/forget-password' element={<CheckLogin><ForgetPassword /></CheckLogin>} />
-        <Route path='/verify-forget-password' element={<CheckLogin><VerifyForgetPassword /></CheckLogin>} />
+        <Route path='/verify-otp' element={<VerifyOtp />} />
+        <Route path='/change-password' element={<ChangePassword />} />
+        <Route path='/forget-password' element={<ForgetPassword />} />
+        <Route path='/verify-forget-password' element={<VerifyForgetPassword />} />
       </Routes>
     </>
   )
