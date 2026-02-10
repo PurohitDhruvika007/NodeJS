@@ -10,6 +10,7 @@ import Home from './pages/Home/Home.jsx'
 import Profile from './pages/Profile/Profile.jsx'
 import CheckLogin from './components/CheckLogin.jsx'
 import AddEmployees from './pages/AddEmployees/AddEmployees.jsx'
+import EditEmployees from './pages/EditEmployees/EditEmployees.jsx'
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
         <Route path='/home' element={<CheckLogin><Home /></CheckLogin>} />
         <Route path='/profile' element={<CheckLogin><Profile /></CheckLogin>} />
         <Route path='/add-employees' element={<CheckLogin><AddEmployees /></CheckLogin>} />
+        <Route path='/edit-employees' element={<CheckLogin><EditEmployees /></CheckLogin>} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/verify-otp' element={<VerifyOtp />} />
         <Route path='/change-password' element={<ChangePassword />} />

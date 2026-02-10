@@ -19,6 +19,7 @@ export const updateUser = async (req, res) => {
         const { email } = req.body;
         await UserCollection.updateOne({ email }, { $set: req.body })
         res.json({ status: true, message: "data updated successfully" })
+
     }
     catch (err) {
         res.json({ status: false, message: err.message })
@@ -27,8 +28,8 @@ export const updateUser = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
     try {
-        const { email } = req.body;
-        await UserCollection.deleteOne({ email });
+        const id = req.query.id;
+        await UserCollection.findByIdAndDelete(id);
         res.json({ status: true, message: "data updated successfully" });
     }
     catch (err) {
