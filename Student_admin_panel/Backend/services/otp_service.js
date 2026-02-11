@@ -1,8 +1,9 @@
-export { otpCollection } from "../models/otp_model.js";
+import otpCollection from "../models/otp_model.js";
 import nodemailer from "nodemailer";
+import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
 const transport = nodemailer.createTransport({
     service: "gmail",
@@ -12,22 +13,35 @@ const transport = nodemailer.createTransport({
     }
 });
 
-export const sendEmail = async (email) => {
-    const otp = Math.floor(100000 + Math.random() * 90000).toString();
-    const expiry = new Date(Date.now() + (1000 * 60 * 2));
-    try {
-        await otpCollection.create({ email, otp, expiry });
 
-        transport.sendMail({
-            from: `OTP <${process.env.EMAIL}>`,
+export const sendEmail = async (email) => {
+    try {
+
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+        const otpHash = await bcrypt.hash(otp, 10);
+
+        const expiry = new Date(Date.now() + 2 * 60 * 1000);
+
+        await otpCollection.deleteMany({ email });
+
+        await otpCollection.create({
+            email,
+            otp: otpHash,
+            expiry,
+            attempts: 0
+        });
+
+        await transport.sendMail({
+            from: `OTP Verification <${process.env.EMAIL}>`,
             to: email,
-            subject: "OTP verification",
-            title: `your OTP is ${otp} ,expires in 2 minutes`
-        })
+            subject: "OTP Verification",
+            text: `Your OTP is ${otp}. It will expire in 2 minutes.`
+        });
 
         return true;
-    }
-    catch (err) {
+    } catch (err) {
+        console.error(err);
         return false;
     }
-}
+};

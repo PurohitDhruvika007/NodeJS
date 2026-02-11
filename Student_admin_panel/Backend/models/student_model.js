@@ -1,14 +1,14 @@
 import mongoose from "mongoose"
 
 const studentSchema = new mongoose.Schema({
-    auth_id: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: "auth"
     },
     course: String,
     roll_no: String,
-    phone: String,
+    contact: String,
     address: String,
     photo: String
 }, { timestamps: true });
