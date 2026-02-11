@@ -36,31 +36,40 @@ export const getDashboard = async (req, res) => {
 // ===============================
 export const getAllStudents = async (req, res) => {
     try {
-        const { page = 1, limit = 5, search = "" } = req.query;
-        const skip = (page - 1) * limit;
+        const { page = 1, limit = 5, search = "", className = "" } = req.query;
 
-        const searchFilter = search
-            ? {
-                $or: [
-                    { course: { $regex: search, $options: "i" } },
-                    { roll_no: { $regex: search, $options: "i" } }
-                ]
-            }
-            : {};
+        const pageNumber = Number(page);
+        const limitNumber = Number(limit);
+        const skip = (pageNumber - 1) * limitNumber;
+
+        let filter = {};
+
+        // 🔍 Search by name, email (from Auth), course, roll_no
+        if (search) {
+            filter.$or = [
+                { course: { $regex: search, $options: "i" } },
+                { roll_no: { $regex: search, $options: "i" } }
+            ];
+        }
+
+        // 🎓 Filter by class/course
+        if (className) {
+            filter.course = className;
+        }
 
         const students = await studentCollection
-            .find(searchFilter)
+            .find(filter)
             .populate("userId", "name email")
             .skip(skip)
-            .limit(Number(limit))
+            .limit(limitNumber)
             .sort({ createdAt: -1 });
 
-        const total = await studentCollection.countDocuments(searchFilter);
+        const total = await studentCollection.countDocuments(filter);
 
         res.json({
-            total,
-            currentPage: Number(page),
-            totalPages: Math.ceil(total / limit),
+            totalStudents: total,
+            currentPage: pageNumber,
+            totalPages: Math.ceil(total / limitNumber),
             students
         });
 
