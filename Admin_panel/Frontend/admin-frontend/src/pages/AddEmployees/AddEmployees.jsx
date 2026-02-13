@@ -7,11 +7,12 @@ export default function AddEmployees() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [users, setUsers] = useState([]);
+    const [skip, setSkip] = useState(0);
     const navigate = useNavigate();
 
     const getAllUsersData = async () => {
         try {
-            const res = await axios.get(`${Base_user_url}/getAllUsers`, { withCredentials: true });
+            const res = await axios.get(`${Base_user_url}/getAllUsers?skip=${skip}&limit=5`, { withCredentials: true });
             if (res.data.status) {
                 setUsers(res.data.users);
             }
@@ -23,7 +24,7 @@ export default function AddEmployees() {
 
     useEffect(() => {
         getAllUsersData();
-    }, []);
+    }, [skip]);
 
     const handleAddEmployees = async () => {
         try {
@@ -47,61 +48,73 @@ export default function AddEmployees() {
             }
         }
         catch (err) {
-            alert(res.message);
+            alert(err.message);
         }
     }
 
     return (
-        <div>
-            <div className='container'>
-                <div>
-                    <h1>Add Employees</h1>
-                    <div className='d-flex justify-content-between gap-4'>
-                        <div className="mb-3 col-4">
-                            <label htmlFor="exampleFormControlInput1" className="form-label">Email address</label>
-                            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
-                        </div>
-                        <div className="mb-3 col-4">
-                            <label htmlFor="exampleFormControlInput2" className="form-label">Password</label>
-                            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="form-control" id="exampleFormControlInput2" placeholder="enter password" />
-                        </div>
-                        <div>
-                            <div className='d-flex align-items-center mt-4'>
-                                <button className='btn btn-primary' onClick={handleAddEmployees}>Add Employees</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Role</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                users.map((user, i) => <tr key={i}>
-                                    <th scope="row">{i + 1}</th>
-                                    <th>{user.name ? user.name : "not assign"}</th>
-                                    <td>{user.email ? user.email : "not assign"}</td>
-                                    <td>{user.role ? user.role : "not assign"}</td>
-                                    <td><div className='d-flex gap-3'>
-                                        <button className='btn btn-warning' onClick={() => {
-                                            navigate("/edit-employees", { state: user });
-                                        }}>Edit</button>
-                                        <button className='btn btn-danger' onClick={() => handleDeleteEmployees(user._id)}>delete</button>
-                                    </div></td>
-                                </tr>)
-                            }
+        <div className='container'>
+            <h1>Add Employees</h1>
+            <div className='d-flex justify-content-between gap-4 mb-3'>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className=" col-4" placeholder="Email" />
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className=" col-4" placeholder="Password" />
+                <button className='btn btn-primary' onClick={handleAddEmployees}>Add Employee</button>
+            </div>
 
+            <table className="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                {
+                    (users.length == 0) ? <h3 className='text-center'>no other data available</h3> :
+                        <tbody>
+                            {users.map((user, i) => (
+                                <tr key={user._id}>
+                                    <th>{i + 1}</th>
+                                    <td>{user.user?.name || "not assign"}</td>
+                                    <td>{user.email || "not assign"}</td>
+                                    <td>{user.user?.role || "not assign"}</td>
+                                    <td className='d-flex gap-2'>
+                                        <button className='btn btn-warning' onClick={() => navigate("/edit-employees", { state: user })}>
+                                            Edit
+                                        </button>
+                                        <button className='btn btn-danger' onClick={() => handleDeleteEmployees(user._id)}>
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
-                    </table>
-                </div>
+                }
+
+
+            </table>
+            <div>
+                <button className='btn btn-primary' onClick={() => {
+                    if (skip >= 5) {
+                        setSkip(skip - 5)
+                    }
+                    else {
+                        alert("no more previos data")
+                    }
+                }
+                }>--</button>
+                <button className='btn btn-primary' onClick={() => {
+                    if (users.length == 5) {
+                        setSkip(skip + 5)
+                    }
+                    else {
+                        alert("no more data available")
+                    }
+                }
+                }>++</button>
             </div>
         </div>
     )

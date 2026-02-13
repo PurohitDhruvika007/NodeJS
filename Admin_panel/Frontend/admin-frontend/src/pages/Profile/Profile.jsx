@@ -72,10 +72,10 @@ export default function Profile() {
                             }
                         >
                             <option value="">select the education</option>
-                            <option value="BCA">BCA</option>
-                            <option value="BBA">BBA</option>
-                            <option value="B Tech">B Tech</option>
-                            <option value="Bcom">Bcom</option>
+                            <option value="bca">BCA</option>
+                            <option value="bba">BBA</option>
+                            <option value="b tech">B Tech</option>
+                            <option value="bcom">Bcom</option>
                         </select>
 
                     </div>
@@ -124,10 +124,10 @@ export default function Profile() {
                             }
                         >
                             <option value="">select the role</option>
-                            <option value="Web developer">Web developer</option>
-                            <option value="Financer">Financer</option>
-                            <option value="Admin">Admin</option>
-                            <option value="HR">HR</option>
+                            <option value="web developer">Web developer</option>
+                            <option value="financer">Financer</option>
+                            <option value="admin">Admin</option>
+                            <option value="hr">HR</option>
                         </select>
 
                     </div>

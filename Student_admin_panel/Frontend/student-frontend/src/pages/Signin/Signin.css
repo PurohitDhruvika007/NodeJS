@@ -1,0 +1,176 @@
+/* Wrapper */
+.signin-wrapper {
+    display: flex;
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+}
+
+/* LEFT PANEL */
+.left-panel {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #EDDCC6;
+    /* soft beige */
+    padding: 40px 20px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    background-color: #F2E3BB;
+    /* light cream card */
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    color: #1C0770;
+}
+
+.login-card .title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.login-card .subtitle {
+    font-size: 1rem;
+    margin-bottom: 30px;
+    color: #1C0770;
+}
+
+/* Inputs */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 50px;
+    border: 1px solid #1C0770;
+    background-color: #fff;
+    color: #1C0770;
+    font-size: 0.95rem;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #3a0ca3;
+    box-shadow: 0 0 10px rgba(28, 7, 112, 0.2);
+}
+
+/* Options */
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.options input[type="checkbox"] {
+    accent-color: #3a0ca3;
+}
+
+.options a {
+    color: #1C0770;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.options a:hover {
+    text-decoration: underline;
+}
+
+/* Button */
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    border-radius: 50px;
+    border: none;
+    background: linear-gradient(90deg, #EDDCC6 0%, #1C0770 100%);
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-login:hover {
+    background: linear-gradient(90deg, #1C0770 0%, #EDDCC6 100%);
+}
+
+/* Alert message */
+.alert-message {
+    background: #1C0770;
+    color: #F2E3BB;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Signup text */
+.signup-text {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 0.9rem;
+}
+
+.signup-text a {
+    color: #1C0770;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.signup-text a:hover {
+    text-decoration: underline;
+}
+
+/* RIGHT PANEL */
+.right-panel {
+    flex: 1;
+    position: relative;
+    background: url('https://images.unsplash.com/photo-1581091215365-1d1cf0f438b8?auto=format&fit=crop&w=1200&q=80') center center/cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay-text {
+    text-align: center;
+    color: #F2E3BB;
+    background: rgba(28, 7, 112, 0.3);
+    padding: 30px 20px;
+    border-radius: 20px;
+}
+
+.overlay-text h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.overlay-text p {
+    font-size: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .right-panel {
+        display: none;
+    }
+
+    .left-panel {
+        flex: 1;
+        padding: 20px;
+    }
+}
