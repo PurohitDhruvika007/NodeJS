@@ -1,31 +1,120 @@
-/* Wrapper */
-.signin-wrapper {
+/* ===== MODERN TOP ALERT ===== */
+
+.top-alert {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 320px;
+    padding: 14px 20px;
+    border-radius: 12px;
     display: flex;
-    min-height: 100vh;
-    font-family: 'Poppins', sans-serif;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 9999;
+    animation: slideDown 0.4s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     overflow: hidden;
 }
 
-/* LEFT PANEL */
+/* SUCCESS STYLE */
+.top-alert.success {
+    background: linear-gradient(90deg, #1C0770, #3a0ca3);
+    color: #F2E3BB;
+}
+
+/* ERROR STYLE */
+.top-alert.error {
+    background: linear-gradient(90deg, #d90429, #ef233c);
+    color: white;
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: 15px;
+}
+
+/* Progress Bar */
+.progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.8);
+    width: 100%;
+    animation: progress 4s linear forwards;
+}
+
+/* Animations */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+@keyframes progress {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 0%;
+    }
+}
+
+.signin-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #EDDCC6;
+    /* soft beige */
+    font-family: 'Poppins', sans-serif;
+    padding: 40px 20px;
+}
+
+/* INNER WRAPPER */
+.signin-wrapper {
+    display: flex;
+    max-width: 1000px;
+    /* total container width */
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* LEFT PANEL - Form */
 .left-panel {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #EDDCC6;
-    /* soft beige */
-    padding: 40px 20px;
+    padding: 40px;
 }
 
 .login-card {
     width: 100%;
-    max-width: 400px;
-    background-color: #F2E3BB;
-    /* light cream card */
+    max-width: 380px;
     padding: 40px 30px;
     border-radius: 20px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    background-color: #F2E3BB;
+    /* cream card */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     color: #1C0770;
+    text-align: center;
 }
 
 .login-card .title {
@@ -37,12 +126,12 @@
 .login-card .subtitle {
     font-size: 1rem;
     margin-bottom: 30px;
-    color: #1C0770;
 }
 
-/* Inputs */
+/* INPUTS */
 .input-group {
     margin-bottom: 20px;
+    text-align: left;
 }
 
 .input-group label {
@@ -68,7 +157,7 @@
     box-shadow: 0 0 10px rgba(28, 7, 112, 0.2);
 }
 
-/* Options */
+/* OPTIONS */
 .options {
     display: flex;
     justify-content: space-between;
@@ -90,7 +179,7 @@
     text-decoration: underline;
 }
 
-/* Button */
+/* BUTTON */
 .btn-login {
     width: 100%;
     padding: 12px;
@@ -108,7 +197,7 @@
     background: linear-gradient(90deg, #1C0770 0%, #EDDCC6 100%);
 }
 
-/* Alert message */
+/* ALERT MESSAGE */
 .alert-message {
     background: #1C0770;
     color: #F2E3BB;
@@ -119,7 +208,7 @@
     text-align: center;
 }
 
-/* Signup text */
+/* SIGNUP TEXT */
 .signup-text {
     text-align: center;
     margin-top: 25px;
@@ -136,41 +225,23 @@
     text-decoration: underline;
 }
 
-/* RIGHT PANEL */
+/* RIGHT PANEL - IMAGE ONLY */
 .right-panel {
     flex: 1;
-    position: relative;
-    background: url('https://images.unsplash.com/photo-1581091215365-1d1cf0f438b8?auto=format&fit=crop&w=1200&q=80') center center/cover no-repeat;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: url('https://images.pexels.com/photos/4145195/pexels-photo-4145195.jpeg') center/cover no-repeat;
 }
 
-.overlay-text {
-    text-align: center;
-    color: #F2E3BB;
-    background: rgba(28, 7, 112, 0.3);
-    padding: 30px 20px;
-    border-radius: 20px;
-}
-
-.overlay-text h1 {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-}
-
-.overlay-text p {
-    font-size: 1rem;
-}
-
-/* Responsive */
+/* RESPONSIVE */
 @media (max-width: 991px) {
+    .signin-wrapper {
+        flex-direction: column;
+    }
+
     .right-panel {
         display: none;
     }
 
     .left-panel {
-        flex: 1;
-        padding: 20px;
+        padding: 30px 20px;
     }
 }
