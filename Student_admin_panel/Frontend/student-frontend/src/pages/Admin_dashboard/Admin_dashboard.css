@@ -1,47 +1,52 @@
 .dashboard-container {
     padding: 40px;
-    background: #f5f7fa;
+    background: #f4f6fb;
     min-height: 100vh;
 }
 
-.dashboard-title {
+/* Countdown */
+.countdown-card {
+    background: linear-gradient(135deg, #3a0ca3, #7209b7);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
     margin-bottom: 30px;
-    font-size: 26px;
-    font-weight: 600;
-    color: #1C0770;
+    text-align: center;
 }
 
-/* Cards Layout */
-.card-container {
+.countdown-card h3 {
+    margin-bottom: 10px;
+}
+
+.countdown-card p {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Filters */
+.filter-section {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.filter-section input,
+.filter-section select {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* Charts */
+.chart-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 25px;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
 }
 
-/* Individual Card */
-.dashboard-card {
+.chart-box {
     background: white;
-    padding: 30px 20px;
+    padding: 20px;
     border-radius: 12px;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    text-align: center;
-    transition: 0.3s ease;
-    cursor: pointer;
-}
-
-.dashboard-card:hover {
-    transform: translateY(-5px);
-}
-
-/* Card Text */
-.dashboard-card h3 {
-    font-size: 16px;
-    margin-bottom: 10px;
-    color: #555;
-}
-
-.dashboard-card p {
-    font-size: 28px;
-    font-weight: bold;
-    color: #3a0ca3;
 }
