@@ -1,0 +1,73 @@
+.admin-navbar {
+    height: 70px;
+    background: linear-gradient(90deg, #1C0770, #3a0ca3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Logo */
+.logo {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+/* Right links */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.navbar-right a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+
+
+/* Profile Section */
+.profile-section {
+    position: relative;
+}
+
+.profile-btn {
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Dropdown */
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 40px;
+    background: white;
+    color: black;
+    width: 170px;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.dropdown-menu a,
+.logout-btn {
+    display: block;
+    padding: 12px;
+    font-size: 14px;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.dropdown-menu a:hover,
+.logout-btn:hover {
+    background: #f3f3f3;
+}

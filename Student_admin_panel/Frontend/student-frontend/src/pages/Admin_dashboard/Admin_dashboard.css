@@ -1,0 +1,47 @@
+.dashboard-container {
+    padding: 40px;
+    background: #f5f7fa;
+    min-height: 100vh;
+}
+
+.dashboard-title {
+    margin-bottom: 30px;
+    font-size: 26px;
+    font-weight: 600;
+    color: #1C0770;
+}
+
+/* Cards Layout */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+/* Individual Card */
+.dashboard-card {
+    background: white;
+    padding: 30px 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Card Text */
+.dashboard-card h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.dashboard-card p {
+    font-size: 28px;
+    font-weight: bold;
+    color: #3a0ca3;
+}

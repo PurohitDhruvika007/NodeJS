@@ -1,37 +1,50 @@
-/* ===== MODERN TOP ALERT ===== */
+/* ===== RESET & GLOBAL ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
 
+body {
+    background-color: #EDDCC6;
+    /* soft beige */
+    color: #1C0770;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== TOP ALERT ===== */
 .top-alert {
     position: fixed;
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    min-width: 320px;
-    padding: 14px 20px;
+    min-width: 300px;
+    padding: 12px 20px;
     border-radius: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     z-index: 9999;
     animation: slideDown 0.4s ease;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     overflow: hidden;
 }
 
-/* SUCCESS STYLE */
 .top-alert.success {
     background: linear-gradient(90deg, #1C0770, #3a0ca3);
     color: #F2E3BB;
 }
 
-/* ERROR STYLE */
 .top-alert.error {
     background: linear-gradient(90deg, #d90429, #ef233c);
     color: white;
 }
 
-.close-btn {
+.top-alert .close-btn {
     background: transparent;
     border: none;
     color: white;
@@ -40,18 +53,16 @@
     margin-left: 15px;
 }
 
-/* Progress Bar */
-.progress-bar {
+.top-alert .progress-bar {
     position: absolute;
     bottom: 0;
     left: 0;
-    height: 4px;
+    height: 3px;
     background: rgba(255, 255, 255, 0.8);
     width: 100%;
     animation: progress 4s linear forwards;
 }
 
-/* Animations */
 @keyframes slideDown {
     from {
         opacity: 0;
@@ -74,87 +85,95 @@
     }
 }
 
+/* ===== MAIN SIGNIN WRAPPER ===== */
 .signin-main {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #EDDCC6;
-    /* soft beige */
-    font-family: 'Poppins', sans-serif;
-    padding: 40px 20px;
+    padding: 20px;
 }
 
 /* INNER WRAPPER */
 .signin-wrapper {
     display: flex;
-    max-width: 1000px;
-    /* total container width */
     width: 100%;
+    max-width: 900px;
+    /* smaller to prevent scroll */
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    background-color: #F2E3BB;
 }
 
-/* LEFT PANEL - Form */
+/* LEFT PANEL - FORM */
 .left-panel {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 40px;
+    padding: 30px;
 }
 
 .login-card {
     width: 100%;
-    max-width: 380px;
-    padding: 40px 30px;
+    max-width: 350px;
+    padding: 30px 25px;
     border-radius: 20px;
-    background-color: #F2E3BB;
-    /* cream card */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    color: #1C0770;
+    background-color: #EDDCC6;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     text-align: center;
+    color: #1C0770;
 }
 
 .login-card .title {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    /* smaller font */
     font-weight: 700;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .login-card .subtitle {
-    font-size: 1rem;
-    margin-bottom: 30px;
+    font-size: 0.95rem;
+    /* smaller font */
+    margin-bottom: 25px;
 }
 
 /* INPUTS */
 .input-group {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     text-align: left;
 }
 
 .input-group label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     font-weight: 500;
+    font-size: 0.9rem;
 }
 
 .input-group input {
     width: 100%;
-    padding: 12px 20px;
+    padding: 5px 18px;
     border-radius: 50px;
     border: 1px solid #1C0770;
     background-color: #fff;
     color: #1C0770;
-    font-size: 0.95rem;
-    transition: 0.3s;
+    font-size: 0.6rem;
+    text-align: left !important;
+    /* force left input */
+    direction: ltr;
+}
+
+.input-group input::placeholder {
+    text-align: left !important;
+    color: #999;
 }
 
 .input-group input:focus {
     outline: none;
     border-color: #3a0ca3;
-    box-shadow: 0 0 10px rgba(28, 7, 112, 0.2);
+    box-shadow: 0 0 8px rgba(28, 7, 112, 0.2);
 }
 
 /* OPTIONS */
@@ -162,7 +181,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: 22px;
 }
 
 .options input[type="checkbox"] {
@@ -171,7 +190,7 @@
 
 .options a {
     color: #1C0770;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-decoration: none;
 }
 
@@ -182,13 +201,13 @@
 /* BUTTON */
 .btn-login {
     width: 100%;
-    padding: 12px;
+    padding: 11px;
     border-radius: 50px;
     border: none;
     background: linear-gradient(90deg, #EDDCC6 0%, #1C0770 100%);
     color: #fff;
-    font-weight: bold;
-    font-size: 1rem;
+    font-weight: 600;
+    font-size: 0.95rem;
     cursor: pointer;
     transition: 0.3s;
 }
@@ -197,44 +216,18 @@
     background: linear-gradient(90deg, #1C0770 0%, #EDDCC6 100%);
 }
 
-/* ALERT MESSAGE */
-.alert-message {
-    background: #1C0770;
-    color: #F2E3BB;
-    padding: 10px 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    font-size: 0.9rem;
-    text-align: center;
-}
-
-/* SIGNUP TEXT */
-.signup-text {
-    text-align: center;
-    margin-top: 25px;
-    font-size: 0.9rem;
-}
-
-.signup-text a {
-    color: #1C0770;
-    font-weight: 500;
-    text-decoration: none;
-}
-
-.signup-text a:hover {
-    text-decoration: underline;
-}
-
 /* RIGHT PANEL - IMAGE ONLY */
 .right-panel {
     flex: 1;
-    background: url('https://images.pexels.com/photos/4145195/pexels-photo-4145195.jpeg') center/cover no-repeat;
+    background: url('https://i.pinimg.com/736x/fe/a5/9d/fea59d2213f286b2f7d54d52bab9e687.jpg') center/cover no-repeat;
+    min-height: 100%;
 }
 
 /* RESPONSIVE */
 @media (max-width: 991px) {
     .signin-wrapper {
         flex-direction: column;
+        max-width: 400px;
     }
 
     .right-panel {
@@ -242,6 +235,43 @@
     }
 
     .left-panel {
-        padding: 30px 20px;
+        padding: 20px;
     }
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 18px;
+    border-radius: 50px;
+    border: 1px solid #1C0770;
+    background-color: #fff;
+    color: #1C0770;
+    font-size: 0.9rem;
+    text-align: left !important;
+    direction: ltr;
+
+    letter-spacing: normal;
+    /* ✅ fix extra spacing */
+}
+
+.input-group input::placeholder {
+    text-align: left !important;
+    color: #999;
+    letter-spacing: normal;
+    /* ✅ fix placeholder spacing */
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 18px;
+    border-radius: 50px;
+    border: 1px solid #1C0770;
+    background-color: #fff;
+    color: #1C0770;
+    font-size: 0.9rem;
+    text-align: left !important;
+    direction: ltr;
+
+    letter-spacing: normal !important;
+    /* ✅ force normal spacing for typed text */
 }
