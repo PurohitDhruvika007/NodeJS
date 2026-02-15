@@ -7,14 +7,17 @@ import {
     getPerformanceGraph
 } from "../controllers/student_controllers.js";
 
-import { verifyToken } from "../Middleware/auth_middleware.js";
+import { verifyToken, isStudent } from "../Middleware/auth_middleware.js";
 
 const router = express.Router();
 
-router.get("/profile", verifyToken, getProfile);
-router.get("/dashboard", verifyToken, getStudentDashboard);
-router.get("/grades", verifyToken, viewMyGrades);
-router.get("/attendance", verifyToken, viewMyAttendance);
-router.get("/performance-graph", verifyToken, getPerformanceGraph);
+// 🔐 Protect ALL student routes
+router.use(verifyToken, isStudent);
+
+router.get("/profile", getProfile);
+router.get("/dashboard", getStudentDashboard);
+router.get("/grades", viewMyGrades);
+router.get("/attendance", viewMyAttendance);
+router.get("/performance-graph", getPerformanceGraph);
 
 export default router;

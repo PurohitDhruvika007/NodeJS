@@ -1,6 +1,7 @@
 import express from "express";
 import { uploads } from "../Middleware/multer.js";
 import { verifyToken, isAdmin } from "../Middleware/auth_middleware.js";
+
 import {
     getDashboard,
     getAllStudents,
@@ -14,32 +15,37 @@ import {
     markAttendance,
     getAttendance,
     addGrade,
+    getAnalytics,
     getGrades
 } from "../controllers/admin_controllers.js";
 
 const router = express.Router();
 
+// 🔐 Protect ALL admin routes
+router.use(verifyToken, isAdmin);
+
 // Dashboard
-router.get("/dashboard", verifyToken, isAdmin, getDashboard);
+router.get("/dashboard", getDashboard);
+router.get("/analytics", getAnalytics);
 
 // Students CRUD
-router.get("/students", verifyToken, isAdmin, getAllStudents);
-router.get("/students/:id", verifyToken, isAdmin, getSingleStudent);
-router.post("/add-student", verifyToken, isAdmin, uploads.single("photo"), addStudent);
-router.put("/update-student/:id", verifyToken, isAdmin, uploads.single("photo"), updateStudent);
-router.delete("/delete-student/:id", verifyToken, isAdmin, deleteStudent);
+router.get("/students", getAllStudents);
+router.get("/students/:id", getSingleStudent);
+router.post("/add-student", uploads.single("photo"), addStudent);
+router.put("/update-student/:id", uploads.single("photo"), updateStudent);
+router.delete("/delete-student/:id", deleteStudent);
 
 // Admin profile
-router.get("/profile", verifyToken, isAdmin, getAdminProfile);
-router.put("/profile", verifyToken, isAdmin, uploads.single("photo"), updateAdminProfile);
-router.put("/change-password", verifyToken, isAdmin, changeAdminPassword);
+router.get("/profile", getAdminProfile);
+router.put("/profile", uploads.single("photo"), updateAdminProfile);
+router.put("/change-password", changeAdminPassword);
 
 // Attendance
-router.post("/add-attendance", verifyToken, isAdmin, markAttendance);
-router.get("/attendance/:id", verifyToken, isAdmin, getAttendance);
+router.post("/add-attendance", markAttendance);
+router.get("/attendance/:id", getAttendance);
 
 // Grades
-router.post("/add-grade", verifyToken, isAdmin, addGrade);
-router.get("/grades/:id", verifyToken, isAdmin, getGrades);
+router.post("/add-grade", addGrade);
+router.get("/grades/:id", getGrades);
 
 export default router;

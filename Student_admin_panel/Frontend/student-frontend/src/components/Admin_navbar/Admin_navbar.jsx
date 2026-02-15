@@ -23,10 +23,10 @@ export default function Admin_navbar() {
             {/* RIGHT SIDE */}
             <div className="navbar-right">
 
-                <Link to="/dashboard">Dashboard</Link>
-                <Link to="/students">Students</Link>
-                <Link to="/attendance">Attendance</Link>
-                <Link to="/grades">Grades</Link>
+                <Link to="/admin-dashboard">Dashboard</Link>
+                <Link to="/admin-students">Students</Link>
+                <Link to="/admin-attendance">Attendance</Link>
+                <Link to="/admin-grades">Grades</Link>
 
                 {/* PROFILE DROPDOWN */}
                 <div className="profile-section">

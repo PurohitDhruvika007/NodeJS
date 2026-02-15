@@ -4,49 +4,36 @@ import "./Reset_password.css";
 import { Base_auth_url } from "../../utils/global_variable";
 
 export default function ResetPassword() {
-
-    const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+    const [otp, setOtp] = useState(new Array(6).fill(""));
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
     const [type, setType] = useState("");
-
     const [timer, setTimer] = useState(30);
     const [resendDisabled, setResendDisabled] = useState(true);
 
     const inputsRef = useRef([]);
-
     const email = localStorage.getItem("resetEmail");
 
-    // OTP Input handler
     const handleOtpChange = (value, index) => {
         if (!/^[0-9]?$/.test(value)) return;
-
         const newOtp = [...otp];
         newOtp[index] = value;
         setOtp(newOtp);
-
-        if (value && index < 5) {
-            inputsRef.current[index + 1].focus();
-        }
+        if (value && index < 5) inputsRef.current[index + 1].focus();
     };
 
-    // Countdown timer
     useEffect(() => {
         if (timer > 0) {
-            const interval = setInterval(() => {
-                setTimer((prev) => prev - 1);
-            }, 1000);
+            const interval = setInterval(() => setTimer(prev => prev - 1), 1000);
             return () => clearInterval(interval);
         } else {
             setResendDisabled(false);
         }
     }, [timer]);
 
-    // Auto hide alert
     useEffect(() => {
         if (message) {
             const t = setTimeout(() => setMessage(""), 4000);
@@ -56,33 +43,23 @@ export default function ResetPassword() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (newPassword !== confirmPassword) {
             setType("error");
             setMessage("Passwords do not match!");
             return;
         }
 
-        const finalOtp = otp.join("");
-
         setLoading(true);
-
         try {
-            await axios.post(`${Base_auth_url}reset-password`, {
-                email,
-                otp: finalOtp,
-                newPassword
-            });
-
+            await axios.post(
+                `${Base_auth_url}reset-password`,
+                { email, otp: otp.join(""), newPassword },
+                { withCredentials: true } // ✅ use cookie
+            );
             setType("success");
             setMessage("Password reset successfully!");
-
             localStorage.removeItem("resetEmail");
-
-            setTimeout(() => {
-                window.location.href = "/signin";
-            }, 2000);
-
+            setTimeout(() => (window.location.href = "/signin"), 2000);
         } catch (err) {
             setType("error");
             setMessage(err.response?.data?.message || "Reset failed!");
@@ -93,11 +70,9 @@ export default function ResetPassword() {
 
     const handleResend = async () => {
         try {
-            await axios.post(`${Base_auth_url}forgot-password`, { email });
-
+            await axios.post(`${Base_auth_url}forgot-password`, { email }, { withCredentials: true });
             setType("success");
             setMessage("OTP resent successfully!");
-
             setTimer(30);
             setResendDisabled(true);
         } catch {
@@ -108,7 +83,6 @@ export default function ResetPassword() {
 
     return (
         <div className="reset-main">
-
             {message && (
                 <div className={`top-alert ${type}`}>
                     <span>{message}</span>
@@ -123,8 +97,6 @@ export default function ResetPassword() {
                     <p className="subtitle">Enter OTP & new password</p>
 
                     <form onSubmit={handleSubmit}>
-
-                        {/* OTP BOXES */}
                         <div className="otp-container">
                             {otp.map((digit, index) => (
                                 <input
@@ -138,7 +110,6 @@ export default function ResetPassword() {
                             ))}
                         </div>
 
-                        {/* New Password */}
                         <div className="input-group">
                             <label>New Password</label>
                             <div className="password-wrapper">
@@ -155,7 +126,6 @@ export default function ResetPassword() {
                             </div>
                         </div>
 
-                        {/* Confirm Password */}
                         <div className="input-group">
                             <label>Confirm Password</label>
                             <input
@@ -170,18 +140,11 @@ export default function ResetPassword() {
                         <button type="submit" className="btn-reset" disabled={loading}>
                             {loading ? "Resetting..." : "Reset Password"}
                         </button>
-
                     </form>
 
-                    {/* RESEND */}
                     <div className="resend">
-                        {resendDisabled ? (
-                            <span>Resend OTP in {timer}s</span>
-                        ) : (
-                            <button onClick={handleResend}>Resend OTP</button>
-                        )}
+                        {resendDisabled ? <span>Resend OTP in {timer}s</span> : <button onClick={handleResend}>Resend OTP</button>}
                     </div>
-
                 </div>
             </div>
         </div>

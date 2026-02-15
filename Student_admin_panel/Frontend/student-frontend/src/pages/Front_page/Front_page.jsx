@@ -21,12 +21,14 @@ export default function Front_page() {
                     🎓 <span>{schoolName}</span>
                 </div>
 
-                <button
-                    onClick={() => navigate("/signin", { replace: true })}
-                    className="btn-login-nav"
-                >
-                    Login
-                </button>
+                <div>
+                    <button
+                        onClick={() => navigate("/signin", { replace: true })}
+                        className="btn-login-nav"
+                    >
+                        Login
+                    </button>
+                </div>
             </header>
 
             {/* 🔥 HERO SECTION */}
@@ -40,7 +42,7 @@ export default function Front_page() {
                         attendance, grades, and academic excellence.
                     </p>
 
-                    <div className="hero-buttons">
+                    <div className="hero-buttons d-flex">
                         <button
                             onClick={() => navigate("/signin", { replace: true })}
                             className="btn-primary"

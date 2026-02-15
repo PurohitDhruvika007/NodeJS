@@ -7,7 +7,7 @@ import { Base_auth_url } from "../../utils/global_variable";
 export default function OtpVerification() {
     const location = useLocation();
     const navigate = useNavigate();
-    const email = location.state?.email; // get email from props
+    const email = location.state?.email;
 
     const [otp, setOtp] = useState(new Array(6).fill(""));
     const [loading, setLoading] = useState(false);
@@ -28,10 +28,7 @@ export default function OtpVerification() {
         const newOtp = [...otp];
         newOtp[index] = element.value;
         setOtp(newOtp);
-
-        if (element.value && index < 5) {
-            inputRefs.current[index + 1].focus();
-        }
+        if (element.value && index < 5) inputRefs.current[index + 1].focus();
     };
 
     const handleBackspace = (e, index) => {
@@ -49,35 +46,23 @@ export default function OtpVerification() {
 
         try {
             const otpValue = otp.join("");
-
             const res = await axios.post(
                 `${Base_auth_url}verify-otp`,
-                { email, otp: otpValue }
+                { email, otp: otpValue },
+                { withCredentials: true } // ✅ important
             );
-
-            // ✅ Save token
-            localStorage.setItem("token", res.data.token);
-
-            // ✅ Save role (VERY IMPORTANT)
-            localStorage.setItem("role", res.data.role);
 
             setType("success");
             setMessage("OTP verified successfully!");
 
-            // ✅ Redirect based on role
+            // Redirect based on role
             setTimeout(() => {
-                if (res.data.role === "admin") {
-                    navigate("/admin-dashboard", { replace: true });
-                } else {
-                    navigate("/student-dashboard", { replace: true });
-                }
+                if (res.data.role === "admin") navigate("/admin-dashboard", { replace: true });
+                else navigate("/student-dashboard", { replace: true });
             }, 1500);
-
         } catch (err) {
             setType("error");
-            setMessage(
-                err.response?.data?.message || "OTP verification failed!"
-            );
+            setMessage(err.response?.data?.message || "OTP verification failed!");
         } finally {
             setLoading(false);
         }
@@ -85,7 +70,7 @@ export default function OtpVerification() {
 
     const handleResend = async () => {
         try {
-            await axios.post(`${Base_auth_url}resend-otp`, { email });
+            await axios.post(`${Base_auth_url}resend-otp`, { email }, { withCredentials: true });
             setType("success");
             setMessage("OTP resent successfully!");
         } catch (err) {
@@ -119,7 +104,7 @@ export default function OtpVerification() {
                                     value={data}
                                     onChange={(e) => handleChange(e.target, index)}
                                     onKeyDown={(e) => handleBackspace(e, index)}
-                                    ref={el => inputRefs.current[index] = el}
+                                    ref={(el) => (inputRefs.current[index] = el)}
                                     required
                                 />
                             ))}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { Bar, Pie } from "react-chartjs-2";
 import {
@@ -15,85 +15,98 @@ import Admin_navbar from "../../components/Admin_navbar/Admin_navbar";
 import { Base_admin_url } from "../../utils/global_variable";
 import "./Admin_dashboard.css";
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    ArcElement,
-    Tooltip,
-    Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Legend);
+
+axios.defaults.withCredentials = true;
 
 export default function Admin_dashboard() {
-
     const [students, setStudents] = useState([]);
+    const [admin, setAdmin] = useState(null);
+    const [loading, setLoading] = useState(true);
+
     const [selectedGrade, setSelectedGrade] = useState("All");
     const [attendanceFilter, setAttendanceFilter] = useState("All");
     const [searchTerm, setSearchTerm] = useState("");
-    const [countdown, setCountdown] = useState("");
-
-    // 🔹 Example target date (change as needed)
-    const targetDate = new Date("2026-03-01T00:00:00");
 
     useEffect(() => {
-        fetchStudents();
-        startCountdown();
+        fetchDashboardData();
     }, []);
 
-    const fetchStudents = async () => {
+    const fetchDashboardData = async () => {
         try {
+            setLoading(true);
+
             const token = localStorage.getItem("token");
-            const res = await axios.get(`${Base_admin_url}allStudents`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setStudents(res.data);
-        } catch (err) {
-            console.log(err);
+
+            const [studentRes, adminRes] = await Promise.all([
+                axios.get(`${Base_admin_url}students`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                }),
+                axios.get(`${Base_admin_url}profile`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+            ]);
+
+            // ✅ IMPORTANT FIX HERE
+            const studentData = Array.isArray(studentRes.data?.students)
+                ? studentRes.data.students
+                : Array.isArray(studentRes.data)
+                    ? studentRes.data
+                    : [];
+
+            setStudents(studentData);
+
+            setAdmin(adminRes.data?.admin || adminRes.data || null);
+
+        } catch (error) {
+            console.error("Dashboard Error:", error.response?.data || error.message);
+            setStudents([]); // safety fallback
+        } finally {
+            setLoading(false);
         }
     };
 
-    // ⏳ Countdown Logic
-    const startCountdown = () => {
-        setInterval(() => {
-            const now = new Date().getTime();
-            const distance = targetDate - now;
+    const filteredStudents = useMemo(() => {
+        if (!Array.isArray(students)) return [];
 
-            if (distance < 0) {
-                setCountdown("Event Started");
-                return;
-            }
+        return students.filter((student) => {
+            const nameMatch = student.name
+                ?.toLowerCase()
+                .includes(searchTerm.toLowerCase());
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-            const minutes = Math.floor((distance / (1000 * 60)) % 60);
+            const gradeMatch =
+                selectedGrade === "All" || student.grade === selectedGrade;
 
-            setCountdown(`${days}d ${hours}h ${minutes}m`);
-        }, 1000);
-    };
+            const attendanceMatch =
+                attendanceFilter === "All" ||
+                (attendanceFilter === "Above75" && student.attendance >= 75) ||
+                (attendanceFilter === "Below75" && student.attendance < 75);
 
-    // 🔎 Filtering Logic
-    const filteredStudents = students.filter(student => {
+            return nameMatch && gradeMatch && attendanceMatch;
+        });
+    }, [students, searchTerm, selectedGrade, attendanceFilter]);
 
-        const nameMatch = student.name
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase());
+    const totalStudents = Array.isArray(students) ? students.length : 0;
+    const totalAdmins = admin ? 1 : 0;
 
-        const gradeMatch =
-            selectedGrade === "All" || student.grade === selectedGrade;
+    const totalGrades = Array.isArray(students)
+        ? [...new Set(students.map((s) => s.grade))].length
+        : 0;
 
-        const attendanceMatch =
-            attendanceFilter === "All" ||
-            (attendanceFilter === "Above75" && student.attendance >= 75) ||
-            (attendanceFilter === "Below75" && student.attendance < 75);
+    const avgAttendance =
+        students.length > 0
+            ? (
+                students.reduce((sum, s) => sum + (s.attendance || 0), 0) /
+                students.length
+            ).toFixed(1)
+            : 0;
 
-        return nameMatch && gradeMatch && attendanceMatch;
-    });
-
-    // 📊 Grade Count
     const gradeCounts = {};
-    filteredStudents.forEach(student => {
-        gradeCounts[student.grade] =
-            (gradeCounts[student.grade] || 0) + 1;
+    filteredStudents.forEach((student) => {
+        if (student.grade) {
+            gradeCounts[student.grade] =
+                (gradeCounts[student.grade] || 0) + 1;
+        }
     });
 
     const barData = {
@@ -102,51 +115,67 @@ export default function Admin_dashboard() {
             {
                 label: "Students by Grade",
                 data: Object.values(gradeCounts),
-                backgroundColor: [
-                    "#3a0ca3",
-                    "#7209b7",
-                    "#560bad",
-                    "#b5179e"
-                ],
+                backgroundColor: "#4e73df",
                 borderRadius: 8,
             },
         ],
     };
 
-    const attendanceAbove75 =
-        filteredStudents.filter(s => s.attendance >= 75).length;
-
-    const attendanceBelow75 =
-        filteredStudents.filter(s => s.attendance < 75).length;
-
     const pieData = {
         labels: ["Above 75%", "Below 75%"],
         datasets: [
             {
-                data: [attendanceAbove75, attendanceBelow75],
-                backgroundColor: ["#4cc9f0", "#f72585"],
+                data: [
+                    filteredStudents.filter((s) => s.attendance >= 75).length,
+                    filteredStudents.filter((s) => s.attendance < 75).length,
+                ],
+                backgroundColor: ["#1cc88a", "#e74a3b"],
             },
         ],
     };
+
+    if (loading) {
+        return (
+            <>
+                <Admin_navbar />
+                <div className="dashboard-container">
+                    <h2>Loading Dashboard...</h2>
+                </div>
+            </>
+        );
+    }
 
     return (
         <>
             <Admin_navbar />
 
             <div className="dashboard-container">
+                <div className="stats-grid">
+                    <div className="stat-card blue">
+                        <h4>Total Students</h4>
+                        <p>{totalStudents}</p>
+                    </div>
 
-                {/* ⏳ Countdown Card */}
-                <div className="countdown-card">
-                    <h3>Exam Countdown</h3>
-                    <p>{countdown}</p>
+                    <div className="stat-card green">
+                        <h4>Total Admin</h4>
+                        <p>{totalAdmins}</p>
+                    </div>
+
+                    <div className="stat-card purple">
+                        <h4>Total Grades</h4>
+                        <p>{totalGrades}</p>
+                    </div>
+
+                    <div className="stat-card orange">
+                        <h4>Avg Attendance</h4>
+                        <p>{avgAttendance}%</p>
+                    </div>
                 </div>
 
-                {/* 🔎 Search + Filters */}
                 <div className="filter-section">
-
                     <input
                         type="text"
-                        placeholder="Search by student name..."
+                        placeholder="🔍 Search student name..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -169,20 +198,19 @@ export default function Admin_dashboard() {
                         <option value="Above75">Above 75%</option>
                         <option value="Below75">Below 75%</option>
                     </select>
-
                 </div>
 
-                {/* 📊 Charts */}
                 <div className="chart-container">
                     <div className="chart-box">
+                        <h3>Grade Distribution</h3>
                         <Bar data={barData} />
                     </div>
 
                     <div className="chart-box">
+                        <h3>Attendance Overview</h3>
                         <Pie data={pieData} />
                     </div>
                 </div>
-
             </div>
         </>
     );

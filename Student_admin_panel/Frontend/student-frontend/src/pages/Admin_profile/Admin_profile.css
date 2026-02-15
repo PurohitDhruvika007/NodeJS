@@ -1,0 +1,87 @@
+.admin-profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+    background-color: #EDDCC6;
+    font-family: 'Poppins', sans-serif;
+}
+
+.admin-profile-card {
+    width: 100%;
+    max-width: 500px;
+    background-color: #F2E3BB;
+    border-radius: 20px;
+    padding: 40px 30px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    color: #1C0770;
+    text-align: center;
+}
+
+.admin-profile-card h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.profile-photo {
+    margin-bottom: 25px;
+}
+
+.profile-photo img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #1C0770;
+}
+
+.no-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    font-weight: 500;
+    border: 3px solid #1C0770;
+}
+
+.profile-details {
+    text-align: left;
+}
+
+.detail {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 1rem;
+}
+
+.label {
+    font-weight: 600;
+}
+
+.value {
+    font-weight: 500;
+}
+
+.loading {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.error-msg {
+    text-align: center;
+    margin-top: 50px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-color: rgba(231, 74, 59, 0.2);
+    color: #e74a3b;
+    font-weight: 500;
+}

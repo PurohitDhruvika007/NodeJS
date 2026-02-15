@@ -1,52 +1,140 @@
+/* ===============================
+   Global Reset
+================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+}
+
+/* ===============================
+   Dashboard Container
+================================ */
 .dashboard-container {
-    padding: 40px;
-    background: #f4f6fb;
+    padding: 20px 40px;
+    background: #f4f6f9;
     min-height: 100vh;
 }
 
-/* Countdown */
-.countdown-card {
-    background: linear-gradient(135deg, #3a0ca3, #7209b7);
-    color: white;
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-.countdown-card h3 {
-    margin-bottom: 10px;
-}
-
-.countdown-card p {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-/* Filters */
-.filter-section {
-    display: flex;
+/* ===============================
+   Stats Grid
+================================ */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 20px;
     margin-bottom: 30px;
 }
 
-.filter-section input,
-.filter-section select {
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+.stat-card {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Charts */
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card h4 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.stat-card p {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.stat-card.blue {
+    background: rgba(78, 115, 223, 0.85);
+}
+
+.stat-card.green {
+    background: rgba(28, 200, 138, 0.85);
+}
+
+.stat-card.purple {
+    background: rgba(123, 104, 238, 0.85);
+}
+
+.stat-card.orange {
+    background: rgba(255, 159, 67, 0.85);
+}
+
+/* ===============================
+   Filters
+================================ */
+.filter-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.filter-section input,
+.filter-section select {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s ease;
+}
+
+.filter-section input:focus,
+.filter-section select:focus {
+    border-color: #4e73df;
+}
+
+/* ===============================
+   Charts Container
+================================ */
 .chart-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 30px;
+    margin-bottom: 50px;
 }
 
 .chart-box {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.chart-box h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    color: #333;
+}
+
+/* ===============================
+   Responsive
+================================ */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .chart-container {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-section {
+        flex-direction: column;
+        align-items: center;
+    }
 }

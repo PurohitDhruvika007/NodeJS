@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router";
+import axios from "axios";
 import "./Signin.css";
 import { Base_auth_url } from "../../utils/global_variable";
 
@@ -20,10 +20,13 @@ export default function Signin() {
         setMessage("");
 
         try {
-            const res = await axios.post(`${Base_auth_url}login`, formData);
+            await axios.post(`${Base_auth_url}login`, formData, {
+                withCredentials: true, // ✅ important for cookie
+            });
 
-            // Navigate to OTP page with email as state
+            // navigate to OTP verification with email in state
             navigate("/verify-otp", { state: { email: formData.email }, replace: true });
+
         } catch (err) {
             setMessage(err.response?.data?.message || "Login failed");
         } finally {
@@ -74,14 +77,12 @@ export default function Signin() {
                                 <a href="/forgot-password">Forgot Password?</a>
                             </div>
 
-
                             <button type="submit" className="btn-login" disabled={loading}>
                                 {loading ? "Signing in..." : "Sign In"}
                             </button>
                         </form>
                     </div>
                 </div>
-
                 <div className="right-panel"></div>
             </div>
         </div>

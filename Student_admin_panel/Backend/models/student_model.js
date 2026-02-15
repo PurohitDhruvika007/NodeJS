@@ -1,11 +1,7 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 const studentSchema = new mongoose.Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: "auth"
-    },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "auth", required: true },
     course: String,
     roll_no: String,
     contact: String,
@@ -14,5 +10,3 @@ const studentSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 export const studentCollection = mongoose.model("student", studentSchema);
-
-
