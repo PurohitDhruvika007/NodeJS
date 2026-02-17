@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Base_auth_url, Base_user_url } from '../../utils/globalVariable.js';
+import { Base_auth_url, Base_department_url, Base_user_url } from '../../utils/globalVariable.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
 
 export default function AddEmployees() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [department, setDepartment] = useState("");
     const [users, setUsers] = useState([]);
     const [skip, setSkip] = useState(0);
     const navigate = useNavigate();
@@ -22,8 +23,21 @@ export default function AddEmployees() {
         }
     }
 
+    const handleAddDepartments = async () => {
+        try {
+            const res = await axios.post(`${Base_department_url}?name=${department}`);
+            if (res.data.status) {
+                alert(res.data.message);
+            }
+        }
+        catch (err) {
+            alert(err.message)
+        }
+    }
+
     useEffect(() => {
         getAllUsersData();
+
     }, [skip]);
 
     const handleAddEmployees = async () => {
@@ -59,6 +73,11 @@ export default function AddEmployees() {
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className=" col-4" placeholder="Email" />
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className=" col-4" placeholder="Password" />
                 <button className='btn btn-primary' onClick={handleAddEmployees}>Add Employee</button>
+            </div>
+            <div className='d-flex justify-content-between gap-4 mb-3'>
+                <input type="text" value={department} onChange={(e) => setDepartment(e.target.value)} className=" col-4" placeholder="department" />
+
+                <button className='btn btn-primary' onClick={handleAddDepartments}>Add departments</button>
             </div>
 
             <table className="table table-hover">

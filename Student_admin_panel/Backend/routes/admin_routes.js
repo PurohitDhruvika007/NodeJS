@@ -6,7 +6,6 @@ import {
     getDashboard,
     getAllStudents,
     addStudent,
-    getSingleStudent,
     updateStudent,
     deleteStudent,
     getAdminProfile,
@@ -15,8 +14,11 @@ import {
     markAttendance,
     getAttendance,
     addGrade,
+    updateGrade,
+    deleteGrade,
     getAnalytics,
-    getGrades
+    getGrades,
+    getAttendanceSummary
 } from "../controllers/admin_controllers.js";
 
 const router = express.Router();
@@ -24,28 +26,40 @@ const router = express.Router();
 // 🔐 Protect ALL admin routes
 router.use(verifyToken, isAdmin);
 
-// Dashboard
+/* ================= DASHBOARD ================= */
 router.get("/dashboard", getDashboard);
 router.get("/analytics", getAnalytics);
 
-// Students CRUD
-router.get("/students", getAllStudents);
-router.get("/students/:id", getSingleStudent);
-router.post("/add-student", uploads.single("photo"), addStudent);
-router.put("/update-student/:id", uploads.single("photo"), updateStudent);
-router.delete("/delete-student/:id", deleteStudent);
+/* ================= STUDENTS ================= */
+router.get("/students", getAllStudents);             // Get all students
+router.post("/students", uploads.single("photo"), addStudent); // Add student
+router.put("/students/:id", uploads.single("photo"), updateStudent); // Update student
+router.delete("/students/:id", deleteStudent);       // Delete student
 
-// Admin profile
-router.get("/profile", getAdminProfile);
-router.put("/profile", uploads.single("photo"), updateAdminProfile);
-router.put("/change-password", changeAdminPassword);
+/* ================= ADMIN PROFILE ================= */
+router.get("/profile", getAdminProfile);            // Get profile
+router.put("/profile", uploads.single("photo"), updateAdminProfile); // Update profile
+router.put("/change-password", changeAdminPassword); // Change password
 
-// Attendance
-router.post("/add-attendance", markAttendance);
-router.get("/attendance/:id", getAttendance);
+/* ================= ATTENDANCE ================= */
+router.post("/attendance", markAttendance);         // Mark attendance
+router.get("/attendance/:id", getAttendance);      // Get attendance of a student
+router.get("/attendance-summary", getAttendanceSummary); // Attendance summary
 
-// Grades
-router.post("/add-grade", addGrade);
+
+/* ================= GRADES ================= */
+
+// Add grade
+router.post("/grades", addGrade);
+
+// Update grade by ID
+router.put("/grades/:id", updateGrade);
+
+// Get grades for a student
 router.get("/grades/:id", getGrades);
+
+// Delete grade
+router.delete("/grades/:id", deleteGrade);
+
 
 export default router;

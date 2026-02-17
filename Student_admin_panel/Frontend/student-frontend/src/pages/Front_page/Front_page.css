@@ -11,7 +11,7 @@
     overflow-x: hidden;
 }
 
-/* 🔥 GLASS NAVBAR */
+/* 🔥 NAVBAR */
 .navbar {
     position: fixed;
     width: 100%;
@@ -56,6 +56,8 @@
     justify-content: center;
     text-align: center;
     padding: 0 20px;
+    padding-top: 80px;
+    /* important for fixed navbar */
 }
 
 .hero-overlay {
@@ -82,15 +84,23 @@
     font-size: 1.1rem;
 }
 
-/* BUTTONS */
+/* ✅ BUTTONS SIDE BY SIDE */
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+/* BUTTON STYLE */
 .hero-buttons button {
-    margin: 10px;
     padding: 12px 30px;
     border-radius: 30px;
     border: none;
     font-weight: 600;
     cursor: pointer;
     transition: 0.3s;
+    min-width: 180px;
 }
 
 .btn-primary {
@@ -181,5 +191,9 @@
 @media(max-width: 768px) {
     .hero-content h1 {
         font-size: 2rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
     }
 }

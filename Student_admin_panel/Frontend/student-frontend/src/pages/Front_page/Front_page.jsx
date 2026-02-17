@@ -15,7 +15,7 @@ export default function Front_page() {
     return (
         <div className="frontpage-main">
 
-            {/* 🔥 STICKY GLASS NAVBAR */}
+            {/* 🔥 STICKY NAVBAR */}
             <header className="navbar">
                 <div className="logo">
                     🎓 <span>{schoolName}</span>
@@ -42,7 +42,8 @@ export default function Front_page() {
                         attendance, grades, and academic excellence.
                     </p>
 
-                    <div className="hero-buttons d-flex">
+                    {/* ✅ BUTTONS SIDE BY SIDE */}
+                    <div className="hero-buttons">
                         <button
                             onClick={() => navigate("/signin", { replace: true })}
                             className="btn-primary"

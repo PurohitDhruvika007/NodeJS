@@ -9,20 +9,17 @@ export const register = async (req, res) => {
     try {
         const { name, email, password, role } = req.body;
 
-        // ✅ Check if email exists
         const existingUser = await AuthCollection.findOne({ email });
         if (existingUser) return res.status(400).json({ message: "Email already exists" });
 
         const hash = await bcrypt.hash(password, 10);
-        const user = await AuthCollection.create({ name, email, password: hash, role });
+        await AuthCollection.create({ name, email, password: hash, role });
 
         res.status(201).json({ message: "User registered successfully" });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
-
-// ================= LOGIN =================
 export const login = async (req, res) => {
     try {
         const email = req.body.email.toLowerCase();
@@ -34,15 +31,33 @@ export const login = async (req, res) => {
         const match = await bcrypt.compare(password, user.password);
         if (!match) return res.status(401).json({ message: "Incorrect password" });
 
-        // ✅ Send OTP
-        const sent = await sendEmail(email);
+        // 🔹 Send OTP for all roles
+        const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit OTP
+        const hashedOtp = await bcrypt.hash(otp, 10);
+
+        // Delete any previous OTPs
+        await otpCollection.deleteMany({ email });
+
+        // Save new OTP with expiry (5 min)
+        await otpCollection.create({
+            email,
+            otp: hashedOtp,
+            expiry: new Date(Date.now() + 5 * 60 * 1000),
+        });
+
+        // Send OTP email
+        const sent = await sendEmail(email, otp);
         if (!sent) return res.status(500).json({ message: "Failed to send OTP" });
 
-        res.json({ message: "OTP sent to email", email });
+        // Respond to frontend: OTP sent
+        res.json({ message: "OTP sent to email", email, role: user.role });
+
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
+
+
 
 // ================= VERIFY OTP =================
 export const verifyOtp = async (req, res) => {
@@ -69,15 +84,15 @@ export const verifyOtp = async (req, res) => {
             { expiresIn: "1h" }
         );
 
-        // Set cookie
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "Strict",
-            maxAge: 60 * 60 * 1000 // 1 hour
+            maxAge: 60 * 60 * 1000
         });
 
         res.json({ message: "OTP verified successfully", role: user.role });
+
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -95,6 +110,7 @@ export const checkLogin = async (req, res) => {
         if (!user) return res.status(401).json({ success: false, message: "User not found" });
 
         res.status(200).json({ success: true, user: { id: user._id, email: user.email, role: user.role } });
+
     } catch (error) {
         res.status(401).json({ success: false, message: "Invalid or expired token" });
     }
@@ -107,12 +123,12 @@ export const forgotPassword = async (req, res) => {
         const user = await AuthCollection.findOne({ email });
         if (!user) return res.status(404).json({ message: "User not found" });
 
-        // Delete old OTP
         await otpCollection.deleteMany({ email });
-
         const sent = await sendEmail(email);
+
         if (sent) return res.json({ message: "OTP sent to email" });
         else return res.status(500).json({ message: "Failed to send OTP" });
+
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -125,7 +141,6 @@ export const resetPassword = async (req, res) => {
 
         const record = await otpCollection.findOne({ email });
         if (!record) return res.status(400).json({ message: "OTP not found" });
-
         if (record.expiry < new Date()) return res.status(400).json({ message: "OTP expired" });
 
         const valid = await bcrypt.compare(otp, record.otp);
@@ -133,9 +148,10 @@ export const resetPassword = async (req, res) => {
 
         const hash = await bcrypt.hash(newPassword, 10);
         await AuthCollection.updateOne({ email }, { password: hash });
-
         await otpCollection.deleteMany({ email });
+
         res.json({ message: "Password reset successful" });
+
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -155,6 +171,7 @@ export const changePassword = async (req, res) => {
         await user.save();
 
         res.json({ message: "Password changed successfully" });
+
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -173,12 +190,27 @@ export const resendOtp = async (req, res) => {
         const user = await AuthCollection.findOne({ email });
         if (!user) return res.status(404).json({ message: "User not found" });
 
-        // Delete previous OTP before resending
+        const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit OTP
+        const hashedOtp = await bcrypt.hash(otp, 10);
+
+        // Delete any previous OTPs
         await otpCollection.deleteMany({ email });
-        await sendEmail(email);
+
+        // Save new OTP with expiry
+        await otpCollection.create({
+            email,
+            otp: hashedOtp,
+            expiry: new Date(Date.now() + 5 * 60 * 1000) // 5 minutes
+        });
+
+        // Send OTP email
+        const sent = await sendEmail(email, otp);
+        if (!sent) return res.status(500).json({ message: "Failed to resend OTP" });
 
         res.json({ message: "OTP resent successfully" });
+
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
+

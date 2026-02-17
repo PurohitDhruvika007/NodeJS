@@ -13,18 +13,17 @@ const transport = nodemailer.createTransport({
     }
 });
 
-
 export const sendEmail = async (email) => {
     try {
-
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
         const otpHash = await bcrypt.hash(otp, 10);
 
-        const expiry = new Date(Date.now() + 2 * 60 * 1000);
+        const expiry = new Date(Date.now() + 5 * 60 * 1000); // 5 min
 
+        // Delete old OTP
         await otpCollection.deleteMany({ email });
 
+        // Save new OTP
         await otpCollection.create({
             email,
             otp: otpHash,
@@ -36,7 +35,7 @@ export const sendEmail = async (email) => {
             from: `OTP Verification <${process.env.EMAIL}>`,
             to: email,
             subject: "OTP Verification",
-            text: `Your OTP is ${otp}. It will expire in 2 minutes.`
+            text: `Your OTP is ${otp}. It will expire in 5 minutes.`
         });
 
         return true;
@@ -45,3 +44,4 @@ export const sendEmail = async (email) => {
         return false;
     }
 };
+

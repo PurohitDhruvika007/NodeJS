@@ -1,20 +1,34 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router'
-import { Base_user_url } from '../../utils/globalVariable.js'
+import { Base_department_url, Base_user_url } from '../../utils/globalVariable.js'
 
 export default function EditEmployees() {
 
     const { state } = useLocation();   // getting clicked user
     const navigate = useNavigate();
+    const [departments, setDepartments] = useState([]);
 
     const [currentUserData, setCurrentUserData] = useState({});
 
     useEffect(() => {
-        if (state) {
-            setCurrentUserData(state);
-        }
+
+        setCurrentUserData(state);
+        handleReadDepartment();
     }, [state]);
+
+    const handleReadDepartment = async () => {
+        try {
+            const res = await axios.get(`${Base_department_url}`);
+            if (res.data.status) {
+                setDepartments(res.data.departments);
+                console.log(res.data.departments);
+            }
+        }
+        catch (err) {
+            alert(err.message);
+        }
+    }
 
     const handleUpdateUser = async () => {
         try {
@@ -209,10 +223,11 @@ export default function EditEmployees() {
                         }
                     >
                         <option value="">Select Role</option>
-                        <option value="web developer">Web developer</option>
-                        <option value="financer">Financer</option>
-                        <option value="admin">Admin</option>
-                        <option value="hr">HR</option>
+                        {
+                            departments.map((department, i) => (
+                                <option key={i} value={department.name}>{department.name}</option>
+                            ))
+                        }
                     </select>
                 </div>
 

@@ -85,3 +85,49 @@
     color: #e74a3b;
     font-weight: 500;
 }
+
+.profile-details input {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 60%;
+}
+
+.profile-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.edit-btn,
+.save-btn,
+.cancel-btn {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.edit-btn {
+    background-color: #1C0770;
+    color: #fff;
+}
+
+.save-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.cancel-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.edit-btn:hover,
+.save-btn:hover,
+.cancel-btn:hover {
+    transform: scale(1.05);
+}

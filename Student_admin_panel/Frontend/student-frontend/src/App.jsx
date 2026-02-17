@@ -15,6 +15,8 @@ import Admin_attendance from './pages/Admin_attendance/Admin_attendance.jsx';
 import Admin_grades from './pages/Admin_grades/Admin_grades.jsx';
 import Admin_profile from './pages/Admin_profile/Admin_profile.jsx';
 import Change_password from './pages/Change_password/Change_password.jsx';
+import Add_students from './pages/Add_students/Add_students.jsx';
+import Edit_students from './pages/Edit_students/Edit_students.jsx';
 
 function App() {
 
@@ -89,6 +91,25 @@ function App() {
         element={
           <CheckLogin>
             <Change_password />
+          </CheckLogin>
+        }
+      />
+
+      <Route
+        path="/admin-students/add-student"
+        element={
+          <CheckLogin>
+            <Add_students />
+          </CheckLogin>
+        }
+      />
+
+
+      <Route
+        path="/admin-students/edit-student"
+        element={
+          <CheckLogin>
+            <Edit_students />
           </CheckLogin>
         }
       />

@@ -8,6 +8,7 @@ export default function Signin() {
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
+    const [type, setType] = useState(""); // "success" or "error"
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -18,16 +19,38 @@ export default function Signin() {
         e.preventDefault();
         setLoading(true);
         setMessage("");
+        setType("");
 
         try {
-            await axios.post(`${Base_auth_url}login`, formData, {
-                withCredentials: true, // ✅ important for cookie
-            });
+            const res = await axios.post(
+                `${Base_auth_url}login`,
+                formData,
+                { withCredentials: true }
+            );
 
-            // navigate to OTP verification with email in state
-            navigate("/verify-otp", { state: { email: formData.email }, replace: true });
+            console.log("Login Response:", res.data);
+
+            // ✅ OTP sent to email for ANY role
+            if (res.data.message === "OTP sent to email") {
+                setType("success");
+                setMessage("OTP sent to your email!");
+
+                setTimeout(() => {
+                    navigate("/verify-otp", {
+                        state: { email: formData.email },
+                        replace: true
+                    });
+                }, 1000);
+                return;
+            }
+
+            // Unexpected response
+            setType("error");
+            setMessage("Unexpected server response");
 
         } catch (err) {
+            console.error("Login Error:", err.response?.data);
+            setType("error");
             setMessage(err.response?.data?.message || "Login failed");
         } finally {
             setLoading(false);
@@ -42,7 +65,11 @@ export default function Signin() {
                         <h2 className="title">Welcome Back!</h2>
                         <p className="subtitle">Sign in to access your dashboard</p>
 
-                        {message && <div className="alert-message">{message}</div>}
+                        {message && (
+                            <div className={`alert-message ${type}`}>
+                                {message}
+                            </div>
+                        )}
 
                         <form onSubmit={handleSubmit}>
                             <div className="input-group">
@@ -70,10 +97,8 @@ export default function Signin() {
                             </div>
 
                             <div className="options">
-                                <div>
-                                    <input type="checkbox" id="remember" />
-                                    <label htmlFor="remember"> Remember me</label>
-                                </div>
+                                <input type="checkbox" id="remember" />
+                                <label htmlFor="remember"> Remember me</label>
                                 <a href="/forgot-password">Forgot Password?</a>
                             </div>
 

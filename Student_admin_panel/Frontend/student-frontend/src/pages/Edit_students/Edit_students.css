@@ -1,0 +1,96 @@
+.add-student-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.add-student-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+    color: #333333;
+    font-weight: 600;
+}
+
+/* Form grid layout */
+.add-student-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row input[type="password"],
+.form-row input[type="file"] {
+    flex: 1 1 calc(33.333% - 20px);
+    padding: 12px 15px;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-row input:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+    outline: none;
+}
+
+.add-student-form button {
+    width: 100%;
+    padding: 12px 0;
+    background-color: #4a90e2;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-student-form button:hover {
+    background-color: #357abd;
+}
+
+.text-danger {
+    color: #ff4d4f;
+    font-weight: 500;
+}
+
+/* Image preview styling */
+.photo-preview {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.photo-preview img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px solid #4a90e2;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .form-row input {
+        flex: 1 1 calc(50% - 20px);
+    }
+}
+
+@media (max-width: 576px) {
+    .form-row input {
+        flex: 1 1 100%;
+    }
+}
