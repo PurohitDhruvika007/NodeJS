@@ -14,9 +14,13 @@ import Admin_students from './pages/Admin_students/Admin_students.jsx';
 import Admin_attendance from './pages/Admin_attendance/Admin_attendance.jsx';
 import Admin_grades from './pages/Admin_grades/Admin_grades.jsx';
 import Admin_profile from './pages/Admin_profile/Admin_profile.jsx';
-import Change_password from './pages/Change_password/Change_password.jsx';
 import Add_students from './pages/Add_students/Add_students.jsx';
 import Edit_students from './pages/Edit_students/Edit_students.jsx';
+import Student_profile from './pages/Student_profile/Student_profile.jsx';
+import Student_attendance from './pages/Student_attendance/Student_attendance.jsx';
+import ChangeAdminPassword from './pages/Change_admin_password/Change_admin_password.jsx';
+import ChangeStudentPassword from './pages/Change_student_password/Change_student_password.jsx';
+import Student_grade from './pages/Student_grade/Student_grade.jsx';
 
 function App() {
 
@@ -87,10 +91,45 @@ function App() {
       />
 
       <Route
-        path="/change-password"
+        path="/student-profile"
         element={
           <CheckLogin>
-            <Change_password />
+            <Student_profile />
+          </CheckLogin>
+        }
+      />
+      <Route
+        path="/student-attendance"
+        element={
+          <CheckLogin>
+            <Student_attendance />
+          </CheckLogin>
+        }
+      />
+
+      <Route
+        path="/student-grades"
+        element={
+          <CheckLogin>
+            <Student_grade />
+          </CheckLogin>
+        }
+      />
+
+      <Route
+        path="/change-admin-password"
+        element={
+          <CheckLogin>
+            <ChangeAdminPassword />
+          </CheckLogin>
+        }
+      />
+
+      <Route
+        path="/change-student-password"
+        element={
+          <CheckLogin>
+            <ChangeStudentPassword />
           </CheckLogin>
         }
       />

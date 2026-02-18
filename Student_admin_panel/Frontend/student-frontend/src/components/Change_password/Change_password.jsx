@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Admin_navbar from "../../components/Admin_navbar/Admin_navbar";
-import { Base_admin_url } from "../../utils/global_variable";
-import "./Change_password.css";
+import "./Change_password.css"; // unified CSS
+import { Base_auth_url } from "../../utils/global_variable";
 
-export default function Change_password() {
+export default function Change_password({ NavbarComponent }) {
     const [formData, setFormData] = useState({
         oldPassword: "",
         newPassword: "",
@@ -19,12 +18,10 @@ export default function Change_password() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    // ✅ Auto hide alert after 4 seconds
+    // Auto-hide alert
     useEffect(() => {
         if (message) {
-            const timer = setTimeout(() => {
-                setMessage("");
-            }, 4000);
+            const timer = setTimeout(() => setMessage(""), 4000);
             return () => clearTimeout(timer);
         }
     }, [message]);
@@ -47,7 +44,7 @@ export default function Change_password() {
             setLoading(true);
 
             const res = await axios.put(
-                `${Base_admin_url}change-password`,
+                `${Base_auth_url}change-password`, // your backend endpoint
                 {
                     oldPassword: formData.oldPassword,
                     newPassword: formData.newPassword
@@ -74,16 +71,12 @@ export default function Change_password() {
 
     return (
         <>
-            <Admin_navbar />
+            {NavbarComponent && <NavbarComponent />}
 
-            {/* ✅ Top Alert */}
             {message && (
                 <div className={`top-alert ${type}`}>
                     <span>{message}</span>
-                    <button
-                        className="close-btn"
-                        onClick={() => setMessage("")}
-                    >
+                    <button className="close-btn" onClick={() => setMessage("")}>
                         ✖
                     </button>
                     <div className="progress-bar"></div>
@@ -93,7 +86,6 @@ export default function Change_password() {
             <div className="change-password-container">
                 <div className="change-password-card">
                     <h2>Change Password</h2>
-
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label>Current Password</label>
@@ -105,7 +97,6 @@ export default function Change_password() {
                                 required
                             />
                         </div>
-
                         <div className="form-group">
                             <label>New Password</label>
                             <input
@@ -116,7 +107,6 @@ export default function Change_password() {
                                 required
                             />
                         </div>
-
                         <div className="form-group">
                             <label>Confirm New Password</label>
                             <input
@@ -127,7 +117,6 @@ export default function Change_password() {
                                 required
                             />
                         </div>
-
                         <button type="submit" disabled={loading}>
                             {loading ? "Updating..." : "Update Password"}
                         </button>

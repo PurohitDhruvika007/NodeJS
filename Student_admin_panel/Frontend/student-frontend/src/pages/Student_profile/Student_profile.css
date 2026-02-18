@@ -1,0 +1,88 @@
+/* Student_profile.css */
+
+.student-profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+}
+
+.student-profile-card {
+    background-color: #fff;
+    width: 400px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px 20px;
+    text-align: center;
+    position: relative;
+}
+
+.student-profile-card h2 {
+    margin-bottom: 25px;
+    font-size: 24px;
+    color: #333;
+    font-weight: 600;
+}
+
+.profile-photo {
+    margin-bottom: 25px;
+}
+
+.profile-photo img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #007bff;
+}
+
+.no-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888;
+    font-weight: 500;
+    font-size: 14px;
+    margin: 0 auto;
+    border: 3px solid #ccc;
+}
+
+.profile-details {
+    text-align: left;
+}
+
+.detail {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.label {
+    font-weight: 500;
+    color: #555;
+}
+
+.value {
+    font-weight: 600;
+    color: #222;
+}
+
+.loading,
+.error-msg {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 18px;
+    color: #555;
+}
+
+/* Optional: Hover effect for card */
+.student-profile-card:hover {
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}

@@ -17,8 +17,8 @@ export default function Edit_students() {
         roll_no: "",
         contact: "",
         address: "",
-        photo: null,
-        oldPhoto: null,
+        photo: null,      // new photo file
+        oldPhoto: null,   // existing photo filename
     });
 
     const [photoPreview, setPhotoPreview] = useState(null);
@@ -36,14 +36,15 @@ export default function Edit_students() {
             try {
                 const res = await axios.get(`${Base_admin_url}students`, { withCredentials: true });
                 const student = res.data.find(s => s._id === studentId);
+
                 if (!student) {
                     setError("Student not found");
                     return;
                 }
 
                 setFormData({
-                    name: student.userId.name,
-                    email: student.userId.email,
+                    name: student.userId.name || "",
+                    email: student.userId.email || "",
                     course: student.course || "",
                     roll_no: student.roll_no || "",
                     contact: student.contact || "",
@@ -51,8 +52,9 @@ export default function Edit_students() {
                     photo: null,
                     oldPhoto: student.photo || null,
                 });
+
             } catch (err) {
-                setError("Failed to load student data");
+                setError(err.response?.data?.message || "Failed to load student data");
             }
         };
 
@@ -77,10 +79,21 @@ export default function Edit_students() {
 
         try {
             const data = new FormData();
-            Object.entries(formData).forEach(([key, val]) => val && key !== "oldPhoto" && data.append(key, val));
+
+            // Append all fields even if empty to ensure update
+            data.append("name", formData.name);
+            data.append("email", formData.email);
+            data.append("course", formData.course);
+            data.append("roll_no", formData.roll_no);
+            data.append("contact", formData.contact);
+            data.append("address", formData.address);
+
+            if (formData.photo) {
+                data.append("photo", formData.photo); // append new photo if uploaded
+            }
 
             await axios.put(
-                `${Base_admin_url}update-student/${studentId}`,
+                `${Base_admin_url}students/${studentId}`,
                 data,
                 { withCredentials: true, headers: { "Content-Type": "multipart/form-data" } }
             );
@@ -103,15 +116,53 @@ export default function Edit_students() {
 
                 <form onSubmit={handleSubmit} className="add-student-form">
                     <div className="form-row">
-                        <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required />
-                        <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
-                        <input type="text" name="course" placeholder="Course / Standard" value={formData.course} onChange={handleChange} />
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Full Name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                        />
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="course"
+                            placeholder="Course / Standard"
+                            value={formData.course}
+                            onChange={handleChange}
+                        />
                     </div>
 
                     <div className="form-row">
-                        <input type="text" name="roll_no" placeholder="Roll Number" value={formData.roll_no} onChange={handleChange} />
-                        <input type="text" name="contact" placeholder="Contact Number" value={formData.contact} onChange={handleChange} />
-                        <input type="text" name="address" placeholder="Address" value={formData.address} onChange={handleChange} />
+                        <input
+                            type="text"
+                            name="roll_no"
+                            placeholder="Roll Number"
+                            value={formData.roll_no}
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="text"
+                            name="contact"
+                            placeholder="Contact Number"
+                            value={formData.contact}
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="text"
+                            name="address"
+                            placeholder="Address"
+                            value={formData.address}
+                            onChange={handleChange}
+                        />
                     </div>
 
                     <div className="form-row">
@@ -126,7 +177,9 @@ export default function Edit_students() {
                         )}
                     </div>
 
-                    <button type="submit" disabled={loading}>{loading ? "Updating..." : "Update Student"}</button>
+                    <button type="submit" disabled={loading}>
+                        {loading ? "Updating..." : "Update Student"}
+                    </button>
                 </form>
             </div>
         </>

@@ -23,8 +23,8 @@ export default function Student_navbar() {
             {/* RIGHT SIDE */}
             <div className="navbar-right">
                 <Link to="/student-dashboard">Dashboard</Link>
-                <Link to="/my-grades">Grades</Link>
-                <Link to="/my-attendance">Attendance</Link>
+                <Link to="/student-grades">Grades</Link>
+                <Link to="/student-attendance">Attendance</Link>
 
                 {/* PROFILE DROPDOWN */}
                 <div className="profile-section">
@@ -38,7 +38,7 @@ export default function Student_navbar() {
                     {dropdownOpen && (
                         <div className="dropdown-menu">
                             <Link to="/student-profile">Profile</Link>
-                            <Link to="/change-password">Change Password</Link>
+                            <Link to="/change-student-password">Change Password</Link>
                             <div onClick={handleLogout} className="logout-btn">
                                 Logout
                             </div>

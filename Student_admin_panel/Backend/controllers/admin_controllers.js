@@ -31,10 +31,19 @@ export const getDashboard = async (req, res) => {
             status: "absent"
         });
 
-        const attendancePercentage =
-            totalStudents > 0
-                ? ((presentToday / totalStudents) * 100).toFixed(1)
-                : 0;
+        // ✅ Correct overall attendance percentage
+        const attendanceSummary = await attendanceCollection.aggregate([
+            { $group: { _id: "$studentId", total: { $sum: 1 }, present: { $sum: { $cond: [{ $eq: ["$status", "present"] }, 1, 0] } } } }
+        ]);
+
+        let totalPresent = 0;
+        let totalRecords = 0;
+        attendanceSummary.forEach(a => {
+            totalPresent += a.present;
+            totalRecords += a.total;
+        });
+
+        const attendancePercentage = totalRecords > 0 ? ((totalPresent / totalRecords) * 100).toFixed(1) : 0;
 
         res.json({
             totalStudents,
@@ -48,42 +57,63 @@ export const getDashboard = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
 export const getAnalytics = async (req, res) => {
     try {
-        // 1️⃣ Grades distribution
-        const gradesStats = await gradeCollection.aggregate([
+        // 1️⃣ Get average marks per student (NO grouping by letter)
+        const gradesRaw = await gradeCollection.aggregate([
             {
                 $group: {
-                    _id: "$grade",   // e.g., "A", "B", "C"
-                    count: { $sum: 1 },
-                }
-            },
-            { $sort: { _id: 1 } }
-        ]);
-
-        // 2️⃣ Attendance distribution
-        const attendanceStats = await studentCollection.aggregate([
-            {
-                $project: {
-                    attendance: 1,
-                    status: {
-                        $cond: [{ $gte: ["$attendance", 75] }, "Above75", "Below75"]
-                    }
-                }
-            },
-            {
-                $group: {
-                    _id: "$status",
-                    count: { $sum: 1 }
+                    _id: "$studentId",
+                    averageMarks: { $avg: "$marks" }
                 }
             }
         ]);
 
+        // Populate student name
+        const gradesStats = await Promise.all(
+            gradesRaw.map(async (g) => {
+                const student = await studentCollection
+                    .findById(g._id)
+                    .populate("userId", "name");
+
+                return {
+                    _id: student?.userId?.name || "Unknown",
+                    average: Number(g.averageMarks.toFixed(2))
+                };
+            })
+        );
+
+        // 2️⃣ Attendance distribution (DO NOT CHANGE)
+        const attendanceSummary = await attendanceCollection.aggregate([
+            {
+                $group: {
+                    _id: "$studentId",
+                    total: { $sum: 1 },
+                    present: { $sum: { $cond: [{ $eq: ["$status", "present"] }, 1, 0] } }
+                }
+            }
+        ]);
+
+        let above75 = 0, below75 = 0;
+        for (const a of attendanceSummary) {
+            const percent = a.total > 0 ? (a.present / a.total) * 100 : 0;
+            if (percent >= 75) above75++;
+            else below75++;
+        }
+
+        const attendanceStats = [
+            { _id: "Above75", count: above75 },
+            { _id: "Below75", count: below75 }
+        ];
+
         res.json({ gradesStats, attendanceStats });
+
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
+
 //===================================================
 // ================= STUDENT CRUD ======================
 // =====================================================
@@ -118,13 +148,32 @@ export const addStudent = async (req, res) => {
     }
 };
 
+// ✅ Updated: return student with grade & attendance
 export const getAllStudents = async (req, res) => {
     try {
-        const students = await studentCollection
-            .find()
-            .populate("userId", "name email");
+        const students = await studentCollection.find().populate("userId", "name email").lean();
 
-        res.json(students);
+        const enhancedStudents = await Promise.all(
+            students.map(async s => {
+                const grades = await gradeCollection.find({ studentId: s._id });
+                const totalMarks = grades.reduce((sum, g) => sum + g.marks, 0);
+                const averageMarks = grades.length ? totalMarks / grades.length : 0;
+
+                let grade = "D";
+                if (averageMarks >= 90) grade = "A+";
+                else if (averageMarks >= 80) grade = "A";
+                else if (averageMarks >= 70) grade = "B";
+                else if (averageMarks >= 60) grade = "C";
+
+                const attendanceRecords = await attendanceCollection.find({ studentId: s._id });
+                const presentCount = attendanceRecords.filter(a => a.status === "present").length;
+                const attendancePercentage = attendanceRecords.length ? (presentCount / attendanceRecords.length) * 100 : 0;
+
+                return { ...s, averageMarks, grade, attendancePercentage: Math.round(attendancePercentage) };
+            })
+        );
+
+        res.json(enhancedStudents);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -134,33 +183,82 @@ export const updateStudent = async (req, res) => {
     try {
         const { id } = req.params;
 
+        // 1️⃣ Find student
         const student = await studentCollection.findById(id);
         if (!student) return res.status(404).json({ message: "Student not found" });
 
+        // 2️⃣ Find associated auth document
         const authUser = await AuthCollection.findById(student.userId);
+        if (!authUser) return res.status(404).json({ message: "Associated user not found" });
 
-        if (req.body.name) authUser.name = req.body.name;
-        if (req.body.email) authUser.email = req.body.email;
+        // 3️⃣ Update AuthCollection fields if provided
+        if ("name" in req.body && req.body.name) authUser.name = req.body.name;
+
+        if ("email" in req.body && req.body.email) {
+            // Check for duplicate email
+            const emailExists = await AuthCollection.findOne({ email: req.body.email, _id: { $ne: authUser._id } });
+            if (emailExists) return res.status(400).json({ message: "Email already in use" });
+            authUser.email = req.body.email;
+        }
         await authUser.save();
 
-        if (req.file && student.photo) {
-            const oldPath = path.join("uploads", student.photo);
-            if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+        // 4️⃣ Update student photo if new file is uploaded
+        if (req.file) {
+            if (student.photo) {
+                const oldPath = path.join("uploads", student.photo);
+                if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+            }
             student.photo = req.file.filename;
         }
 
-        student.course = req.body.course || student.course;
-        student.roll_no = req.body.roll_no || student.roll_no;
-        student.contact = req.body.contact || student.contact;
-        student.address = req.body.address || student.address;
+        // 5️⃣ Update other student fields if present in request
+        if ("course" in req.body) student.course = req.body.course;
+        if ("roll_no" in req.body) student.roll_no = req.body.roll_no;
+        if ("contact" in req.body) student.contact = req.body.contact;
+        if ("address" in req.body) student.address = req.body.address;
 
         await student.save();
 
-        res.json({ message: "Student updated successfully", student });
+        // 6️⃣ Populate user info and calculate attendance + average grade
+        const populatedStudent = await studentCollection
+            .findById(student._id)
+            .populate("userId", "name email")
+            .lean();
+
+        // Calculate average marks
+        const grades = await gradeCollection.find({ studentId: student._id });
+        const totalMarks = grades.reduce((sum, g) => sum + g.marks, 0);
+        const averageMarks = grades.length ? totalMarks / grades.length : 0;
+
+        // Assign letter grade
+        let gradeLetter = "D";
+        if (averageMarks >= 90) gradeLetter = "A+";
+        else if (averageMarks >= 80) gradeLetter = "A";
+        else if (averageMarks >= 70) gradeLetter = "B";
+        else if (averageMarks >= 60) gradeLetter = "C";
+
+        // Attendance calculation
+        const attendanceRecords = await attendanceCollection.find({ studentId: student._id });
+        const presentCount = attendanceRecords.filter(a => a.status === "present").length;
+        const attendancePercentage = attendanceRecords.length ? (presentCount / attendanceRecords.length) * 100 : 0;
+
+        // 7️⃣ Send updated student info
+        res.json({
+            message: "Student updated successfully ✅",
+            student: {
+                ...populatedStudent,
+                averageMarks: Number(averageMarks.toFixed(2)),
+                grade: gradeLetter,
+                attendancePercentage: Math.round(attendancePercentage)
+            }
+        });
+
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        console.error("Update Student Error:", err);
+        res.status(500).json({ message: "Failed to update student", error: err.message });
     }
 };
+
 
 export const deleteStudent = async (req, res) => {
     try {

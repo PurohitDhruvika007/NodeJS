@@ -40,7 +40,7 @@ export default function Admin_navbar() {
                     {dropdownOpen && (
                         <div className="dropdown-menu">
                             <Link to="/admin-profile">Profile</Link>
-                            <Link to="/change-password">Change Password</Link>
+                            <Link to="/change-admin-password">Change Password</Link>
                             <div onClick={handleLogout} className="logout-btn">
                                 Logout
                             </div>
