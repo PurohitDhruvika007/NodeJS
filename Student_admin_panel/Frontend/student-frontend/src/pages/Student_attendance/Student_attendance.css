@@ -1,79 +1,112 @@
+/* ===== PAGE CONTAINER ===== */
 .attendance-container {
-    max-width: 900px;
+    max-width: 950px;
     margin: 20px auto;
-    padding: 20px;
+    /* reduce margin */
+    padding: 15px 20px;
+    /* reduce padding */
+
+    border-radius: 16px;
+
+    font-family: 'Poppins', sans-serif;
+
+    height: fit-content;
+    /* important */
 }
 
+
+/* ===== PAGE TITLE ===== */
 .attendance-container h2 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     font-size: 28px;
-    color: #333;
+    font-weight: 700;
+    color: #1C0770;
 }
 
+/* ===== CARD ===== */
 .attendance-card {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background: #f9f9fc;
     padding: 20px;
+    border-radius: 14px;
     overflow-x: auto;
 }
 
+/* ===== TABLE ===== */
 .attendance-table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 0.95rem;
 }
 
-.attendance-table th,
-.attendance-table td {
-    padding: 12px 15px;
-    text-align: center;
-}
-
+/* Table Header */
 .attendance-table th {
-    background-color: #4f46e5;
-    /* Indigo header */
-    color: #fff;
+    background: #1C0770;
+    color: #ffffff;
+    padding: 12px;
+    text-align: left;
     font-weight: 600;
-    position: sticky;
-    top: 0;
+    letter-spacing: 0.5px;
 }
 
-.attendance-table tbody tr {
-    transition: background 0.2s;
+/* Table Data */
+.attendance-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e5e5;
+    color: #333;
 }
 
-.attendance-table tbody tr:nth-child(even) {
-    background: #f7f7f7;
-}
-
+/* Row Hover Effect */
 .attendance-table tbody tr:hover {
-    background: #e0e7ff;
+    background-color: #f1f3ff;
+    transition: 0.3s;
 }
 
+/* ===== STATUS BADGE BASE ===== */
 .status-badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
     color: #fff;
     display: inline-block;
+    text-align: center;
+    min-width: 85px;
 }
 
+/* ===== STATUS COLORS (IMPORTANT: lowercase) ===== */
 .status-badge.present {
-    background-color: #16a34a;
-    /* green */
+    background: linear-gradient(90deg, #28a745, #34d058);
 }
 
 .status-badge.absent {
-    background-color: #dc2626;
-    /* red */
+    background: linear-gradient(90deg, #dc3545, #ff4d6d);
 }
 
+.status-badge.leave {
+    background: linear-gradient(90deg, #007bff, #3399ff);
+}
+
+/* ===== NO DATA / ERROR / LOADING ===== */
+.no-data,
 .loading,
-.error-msg,
-.no-data {
+.error-msg {
     text-align: center;
-    font-size: 18px;
-    color: #555;
-    margin-top: 40px;
+    padding: 40px 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1C0770;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .attendance-container {
+        padding: 20px;
+    }
+
+    .attendance-table th,
+    .attendance-table td {
+        padding: 10px;
+        font-size: 0.85rem;
+    }
 }

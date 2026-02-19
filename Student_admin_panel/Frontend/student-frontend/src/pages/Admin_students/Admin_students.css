@@ -1,51 +1,58 @@
-.students-page {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
+.students-main {
+    display: flex;
+    justify-content: center;
 }
 
+/* ===== PAGE CONTAINER ===== */
+.students-page {
+    padding: 30px 40px;
+    min-height: 100vh;
+    width: 1200px;
+    /* light neutral background */
+    color: #1C0770;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ===== HEADER ===== */
 .students-header {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     margin-bottom: 30px;
 }
 
 .students-header h2 {
-    font-size: 2rem;
-    color: #3a0ca3;
+    font-size: 28px;
     font-weight: 700;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .students-actions {
     display: flex;
     gap: 15px;
-    flex-wrap: nowrap;
-    width: 50%;
-    justify-content: center;
-    margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
 .students-actions input {
-    padding: 10px 15px;
+    padding: 8px 15px;
     border-radius: 50px;
-    border: 1px solid #ccc;
-    outline: none;
-    width: 800px;
+    border: 1px solid #1C0770;
+    width: 250px;
+    font-size: 0.9rem;
 }
 
 .students-actions input:focus {
+    outline: none;
     border-color: #3a0ca3;
-    box-shadow: 0 0 5px rgba(58, 12, 163, 0.2);
+    box-shadow: 0 0 8px rgba(58, 12, 163, 0.2);
 }
 
 .students-actions button {
-    padding: 10px 20px;
+    padding: 8px 18px;
     border-radius: 50px;
-    width: 300px;
     border: none;
-    background-color: #3a0ca3;
+    background: linear-gradient(90deg, #1C0770, #3a0ca3);
     color: #fff;
     font-weight: 600;
     cursor: pointer;
@@ -53,50 +60,61 @@
 }
 
 .students-actions button:hover {
-    background-color: #1C0770;
+    background: linear-gradient(90deg, #3a0ca3, #1C0770);
 }
 
-/* Grid for students */
+/* ===== GRID ===== */
 .students-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    /* ✅ 3 cards per row */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 25px;
 }
 
+/* ===== STUDENT CARD ===== */
 .student-card {
     background-color: #fff;
-    border-radius: 12px;
+    border-radius: 20px;
     padding: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     text-align: center;
-    transition: transform 0.2s;
+    transition: 0.3s;
 }
 
 .student-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* PHOTO */
+.student-photo {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #1C0770;
 }
 
 .student-photo img {
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border-radius: 50%;
-    border: 2px solid #3a0ca3;
-    margin-bottom: 15px;
 }
 
+/* STUDENT INFO */
 .student-card h3 {
-    margin-bottom: 10px;
-    color: #3a0ca3;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
 }
 
 .student-card p {
-    margin: 5px 0;
     font-size: 0.9rem;
-    color: #555;
+    margin-bottom: 5px;
+    color: #333;
 }
 
+/* CARD ACTION BUTTONS */
 .card-actions {
     margin-top: 15px;
     display: flex;
@@ -104,54 +122,55 @@
     gap: 10px;
 }
 
-.btn-edit {
-    background-color: #f0ad4e;
-    color: #fff;
+.btn-edit,
+.btn-delete {
+    padding: 6px 12px;
+    border-radius: 50px;
     border: none;
-    padding: 6px 14px;
-    border-radius: 8px;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: 0.3s;
+}
+
+.btn-edit {
+    background-color: #1cc88a;
+    color: #fff;
 }
 
 .btn-edit:hover {
-    background-color: #ec971f;
+    background-color: #17a673;
 }
 
 .btn-delete {
-    background-color: #d9534f;
+    background-color: #e74a3b;
     color: #fff;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
 }
 
 .btn-delete:hover {
-    background-color: #c9302c;
+    background-color: #c0392b;
 }
 
-/* Responsive */
-@media (max-width: 992px) {
-    .students-grid {
-        grid-template-columns: repeat(2, 1fr);
-        /* 2 per row on tablet */
-    }
+/* ===== LOADING, ERROR, NO STUDENTS ===== */
+.loading,
+.error,
+.no-students {
+    text-align: center;
+    font-size: 1rem;
+    padding: 40px 0;
+    color: #1C0770;
 }
 
-@media (max-width: 576px) {
-    .students-grid {
-        grid-template-columns: 1fr;
-        /* 1 per row on mobile */
-    }
-
+/* ===== RESPONSIVE ===== */
+@media (max-width: 700px) {
     .students-actions {
         flex-direction: column;
-        gap: 10px;
+        align-items: flex-start;
     }
 
-    .students-actions input,
+    .students-actions input {
+        width: 100%;
+    }
+
     .students-actions button {
         width: 100%;
     }

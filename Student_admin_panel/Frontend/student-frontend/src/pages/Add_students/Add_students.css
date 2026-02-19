@@ -1,101 +1,106 @@
+/* ===== PAGE CONTAINER ===== */
 .add-student-container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 30px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px 40px;
+    height: fit-content;
+    max-width: 1200px;
+    margin: auto;
+    background-color: antiquewhite;
+    /* consistent background */
+    font-family: 'Poppins', sans-serif;
+    color: #1C0770;
 }
 
+/* ===== PAGE TITLE ===== */
 .add-student-container h2 {
-    text-align: center;
-    margin-bottom: 25px;
     font-size: 28px;
-    color: #333333;
-    font-weight: 600;
+    font-weight: 700;
+    margin-bottom: 25px;
 }
 
-/* Form grid layout */
+/* ===== ERROR MESSAGE ===== */
+.text-danger {
+    color: #e74a3b;
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+}
+
+/* ===== FORM ===== */
 .add-student-form {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
+/* Form Rows */
 .form-row {
     display: flex;
-    gap: 20px;
+    gap: 15px;
     flex-wrap: wrap;
 }
 
-.form-row input[type="text"],
-.form-row input[type="email"],
-.form-row input[type="password"],
-.form-row input[type="file"] {
-    flex: 1 1 calc(33.333% - 20px);
-    /* 3 inputs per row */
-    padding: 12px 15px;
-    border: 1px solid #cccccc;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: all 0.3s ease;
+/* Inputs */
+.add-student-form input[type="text"],
+.add-student-form input[type="email"],
+.add-student-form input[type="password"],
+.add-student-form input[type="file"] {
+    flex: 1 1 180px;
+    padding: 8px 15px;
+    border-radius: 50px;
+    border: 1px solid #1C0770;
+    font-size: 0.9rem;
 }
 
-.form-row input:focus {
-    border-color: #4a90e2;
-    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+.add-student-form input:focus {
     outline: none;
+    border-color: #3a0ca3;
+    box-shadow: 0 0 8px rgba(58, 12, 163, 0.2);
 }
 
-/* Submit button */
-.add-student-form button {
-    width: 100%;
-    padding: 12px 0;
-    background-color: #4a90e2;
-    color: white;
-    font-size: 18px;
-    font-weight: 500;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.add-student-form button:hover {
-    background-color: #357abd;
-}
-
-/* Error message */
-.text-danger {
-    color: #ff4d4f;
-    font-weight: 500;
-}
-
-/* Image preview styling */
+/* Photo Preview */
 .photo-preview {
-    text-align: center;
-    margin-top: 10px;
+    margin-top: 5px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #1C0770;
 }
 
 .photo-preview img {
-    width: 120px;
-    height: 120px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border-radius: 12px;
-    border: 2px solid #4a90e2;
 }
 
-/* Responsive adjustments */
-@media (max-width: 992px) {
-    .form-row input {
-        flex: 1 1 calc(50% - 20px);
-        /* 2 per row on smaller screens */
+/* Submit Button */
+.add-student-form button {
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: none;
+    background: linear-gradient(90deg, #1C0770, #3a0ca3);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    align-self: flex-start;
+}
+
+.add-student-form button:hover {
+    background: linear-gradient(90deg, #3a0ca3, #1C0770);
+}
+
+.add-student-form button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 700px) {
+    .form-row {
+        flex-direction: column;
     }
-}
 
-@media (max-width: 576px) {
-    .form-row input {
-        flex: 1 1 100%;
-        /* 1 per row on mobile */
+    .add-student-form button {
+        width: 100%;
     }
 }

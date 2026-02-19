@@ -56,7 +56,7 @@ export default function Admin_dashboard() {
         }
     };
 
-    // ================= FILTER STUDENTS =================
+    // Filter students
     const filteredStudents = students.filter((s) => {
         const nameMatch = s.userId?.name?.toLowerCase().includes(searchTerm.toLowerCase());
         const gradeMatch = selectedGrade === "All" || s.grade === selectedGrade;
@@ -67,19 +67,44 @@ export default function Admin_dashboard() {
         return nameMatch && gradeMatch && attendanceMatch;
     });
 
-    // ================= CHART DATA =================
+    // Bar chart data
     const barData = {
         labels: filteredStudents.map(s => s.userId?.name || "Unknown"),
         datasets: [
             {
-                label: "Average Marks per Student",
+                label: "Average Marks",
                 data: filteredStudents.map(s => s.averageMarks || 0),
                 backgroundColor: "#4e73df",
-                borderRadius: 8,
+                borderRadius: 6,
             },
         ],
     };
 
+    const barOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: function (context) {
+                        return `${context.dataset.label}: ${context.parsed.y}`;
+                    },
+                },
+            },
+        },
+        scales: {
+            x: {
+                ticks: { autoSkip: false, maxRotation: 45, minRotation: 0 },
+            },
+            y: {
+                beginAtZero: true,
+                ticks: { stepSize: 10 },
+            },
+        },
+    };
+
+    // Pie chart
     const pieData = {
         labels: ["Above 75%", "Below 75%"],
         datasets: [
@@ -97,12 +122,9 @@ export default function Admin_dashboard() {
     const pieOptions = {
         responsive: true,
         maintainAspectRatio: false,
-        aspectRatio: 1, // ✅ perfect circle
+        aspectRatio: 1,
         plugins: {
-            legend: {
-                position: "bottom",
-                labels: { font: { size: 14 }, color: "#333" },
-            },
+            legend: { position: "bottom", labels: { font: { size: 14 }, color: "#333" } },
             tooltip: {
                 callbacks: {
                     label: function (context) {
@@ -119,9 +141,11 @@ export default function Admin_dashboard() {
     if (loading) {
         return (
             <>
-                <Admin_navbar />
-                <div className="dashboard-container">
-                    <h2>Loading Dashboard...</h2>
+                <div className="main-dashboard">
+                    <Admin_navbar />
+                    <div className="dashboard-container">
+                        <h2>Loading Dashboard...</h2>
+                    </div>
                 </div>
             </>
         );
@@ -132,7 +156,7 @@ export default function Admin_dashboard() {
             <Admin_navbar />
             <div className="dashboard-container">
 
-                {/* ================= STATS CARDS ================= */}
+                {/* STATS CARDS */}
                 <div className="stats-grid">
                     <div className="stat-card blue">
                         <h4>Total Students</h4>
@@ -152,7 +176,7 @@ export default function Admin_dashboard() {
                     </div>
                 </div>
 
-                {/* ================= FILTER SECTION ================= */}
+                {/* FILTER SECTION */}
                 <div className="filter-section">
                     <input
                         type="text"
@@ -175,11 +199,14 @@ export default function Admin_dashboard() {
                     </select>
                 </div>
 
+                {/* CHART SECTION */}
                 {/* ================= CHART SECTION ================= */}
                 <div className="chart-container">
                     <div className="chart-box">
                         <h3>Grade Distribution</h3>
-                        <Bar data={barData} options={{ responsive: true, maintainAspectRatio: false }} />
+                        <div className="bar-wrapper">
+                            <Bar data={barData} options={barOptions} />
+                        </div>
                     </div>
 
                     <div className="chart-box">
@@ -190,7 +217,8 @@ export default function Admin_dashboard() {
                     </div>
                 </div>
 
-                {/* ================= STUDENT TABLE ================= */}
+
+                {/* STUDENT TABLE */}
                 <div className="student-list">
                     <h3>Students</h3>
                     <table>

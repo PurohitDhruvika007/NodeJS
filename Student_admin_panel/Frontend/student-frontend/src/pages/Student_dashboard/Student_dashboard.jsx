@@ -1,3 +1,4 @@
+// Student_dashboard.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
@@ -28,11 +29,9 @@ export default function Student_dashboard() {
             try {
                 setLoading(true);
 
-                // ✅ Summary: total subjects, avg marks, attendance %
                 const summaryRes = await axios.get(`${Base_student_url}dashboard`, { withCredentials: true });
                 setSummary(summaryRes.data);
 
-                // ✅ Grades for performance graph
                 const gradesRes = await axios.get(`${Base_student_url}grades`, { withCredentials: true });
                 const flatGrades = [];
                 gradesRes.data.forEach(term => {
@@ -55,18 +54,31 @@ export default function Student_dashboard() {
     if (loading) return <div className="loading">Loading dashboard...</div>;
     if (error) return <div className="error-msg">{error}</div>;
 
-    // ✅ Prepare chart data
+    // ✅ UPDATED GRAPH LOGIC (Mid vs Final Comparison)
+    const subjects = [...new Set(grades.map(g => g.subject))];
+
+    const midMarks = subjects.map(subject => {
+        const found = grades.find(g => g.subject === subject && g.term === "mid");
+        return found ? found.marks : 0;
+    });
+
+    const finalMarks = subjects.map(subject => {
+        const found = grades.find(g => g.subject === subject && g.term === "final");
+        return found ? found.marks : 0;
+    });
+
     const chartData = {
-        labels: grades.map(g => g.subject),
+        labels: subjects,
         datasets: [
             {
-                label: "Marks",
-                data: grades.map(g => g.marks),
-                backgroundColor: grades.map(g => {
-                    if (g.term === "Term 1") return "#4caf50";
-                    if (g.term === "Term 2") return "#2196f3";
-                    return "#ff9800";
-                })
+                label: "Mid Exam",
+                data: midMarks,
+                backgroundColor: "#4caf50"
+            },
+            {
+                label: "Final Exam",
+                data: finalMarks,
+                backgroundColor: "#2196f3"
             }
         ]
     };
@@ -75,7 +87,7 @@ export default function Student_dashboard() {
         responsive: true,
         plugins: {
             legend: { position: "top" },
-            title: { display: true, text: "Performance Graph (Marks by Subject)" }
+            title: { display: true, text: "Performance Graph (Mid vs Final Comparison)" }
         },
         scales: {
             y: { beginAtZero: true, max: 100 }
@@ -88,7 +100,6 @@ export default function Student_dashboard() {
             <div className="dashboard-container">
                 <h2>Student Dashboard</h2>
 
-                {/* Summary Cards */}
                 <div className="summary-cards">
                     <div className="card">
                         <h3>Total Subjects</h3>
@@ -104,7 +115,6 @@ export default function Student_dashboard() {
                     </div>
                 </div>
 
-                {/* Performance Graph */}
                 <div className="graph-card">
                     <Bar data={chartData} options={chartOptions} />
                 </div>

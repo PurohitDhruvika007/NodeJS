@@ -32,7 +32,7 @@ export default function Add_students() {
         try {
             const data = new FormData();
             Object.entries(formData).forEach(([key, val]) => val && data.append(key, val));
-            await axios.post(`${Base_admin_url}add-student`, data, {
+            await axios.post(`${Base_admin_url}students`, data, {
                 withCredentials: true,
                 headers: { "Content-Type": "multipart/form-data" }
             });

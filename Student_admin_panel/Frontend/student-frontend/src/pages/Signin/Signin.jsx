@@ -97,10 +97,13 @@ export default function Signin() {
                             </div>
 
                             <div className="options">
-                                <input type="checkbox" id="remember" />
-                                <label htmlFor="remember"> Remember me</label>
+                                <div className="remember-group">
+                                    <input type="checkbox" id="remember" />
+                                    <label htmlFor="remember">Remember me</label>
+                                </div>
                                 <a href="/forgot-password">Forgot Password?</a>
                             </div>
+
 
                             <button type="submit" className="btn-login" disabled={loading}>
                                 {loading ? "Signing in..." : "Sign In"}

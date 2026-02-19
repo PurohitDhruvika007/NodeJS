@@ -1,46 +1,100 @@
+/* ===== PAGE CONTAINER ===== */
 .grades-container {
-    padding: 20px;
-    max-width: 900px;
-    margin: auto;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px 30px;
+    /* very light neutral */
+    border-radius: 15px;
+
+    font-family: 'Poppins', sans-serif;
+    color: #1C0770;
 }
 
+/* ===== PAGE TITLE ===== */
+.grades-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+/* ===== TERM CARD ===== */
 .term-card {
-    background: #f9f9f9;
-    border-radius: 10px;
-    margin-bottom: 20px;
+
+    border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+
 }
 
 .term-card h3 {
-    margin-bottom: 10px;
-    color: #333;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #3a0ca3;
 }
 
+/* ===== GRADES TABLE ===== */
 .grades-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .grades-table th,
 .grades-table td {
-    padding: 10px;
-    border: 1px solid #ccc;
-    text-align: center;
+    padding: 10px 12px;
+    text-align: left;
+
+    border: 1px solid #464242;
+    font-size: 0.95rem;
 }
 
+.grades-table th {
+    background-color: #f4f4f9;
+    color: #1C0770;
+    font-weight: 600;
+}
+
+/* ===== TERM SUMMARY ===== */
 .term-summary {
     display: flex;
-    justify-content: space-between;
-    font-weight: bold;
-    color: #555;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: flex-start;
+    font-size: 0.95rem;
 }
 
+.term-summary p {
+    margin: 0;
+    padding: 6px 10px;
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+/* ===== LOADING / ERROR / NO DATA ===== */
 .loading,
 .error-msg,
 .no-data {
     text-align: center;
-    padding: 20px;
-    font-size: 18px;
+    font-size: 1rem;
+    padding: 40px 0;
+    color: #1C0770;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .grades-container {
+        padding: 15px 20px;
+    }
+
+    .term-summary {
+        flex-direction: column;
+    }
+
+    .grades-table th,
+    .grades-table td {
+        padding: 8px 10px;
+    }
 }

@@ -31,7 +31,7 @@ export default function Admin_students() {
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure you want to delete this student?")) return;
         try {
-            await axios.delete(`${Base_admin_url}delete-student/${id}`, { withCredentials: true });
+            await axios.delete(`${Base_admin_url}students/${id}`, { withCredentials: true });
             fetchStudents();
         } catch (err) {
             alert(err.response?.data?.message || "Delete failed");
@@ -48,7 +48,7 @@ export default function Admin_students() {
     return (
         <>
             <Admin_navbar />
-            <div className="students-page">
+            <div className="students-main"><div className="students-page">
                 <div className="students-header">
                     <h2>All Students</h2>
                     <div className="students-actions">
@@ -92,7 +92,7 @@ export default function Admin_students() {
                         ))}
                     </div>
                 )}
-            </div>
+            </div></div>
         </>
     );
 }

@@ -1,198 +1,151 @@
-/* ====== Container ====== */
+/* ===== PAGE CONTAINER ===== */
 .grades-container {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 1.5rem;
-    background: #f7f8fc;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    font-family: 'Inter', sans-serif;
+    padding: 30px 40px;
+    min-height: 100vh;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    /* consistent with other pages */
+    font-family: 'Poppins', sans-serif;
+    color: #1C0770;
 }
 
-/* ====== Form ====== */
+/* ===== PAGE TITLE ===== */
+.grades-container h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+/* ===== FORM SECTION ===== */
 .grades-form {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 2rem;
+    gap: 15px;
+    margin-bottom: 30px;
 }
 
 .grades-form select,
 .grades-form input {
-    flex: 1 1 150px;
-    padding: 0.5rem 0.75rem;
-    border-radius: 6px;
-    border: 1px solid #cbd5e1;
-    font-size: 0.95rem;
-    transition: border 0.2s ease;
+    padding: 8px 15px;
+    border-radius: 50px;
+    border: 1px solid #1C0770;
+    font-size: 0.9rem;
+    flex: 1 1 180px;
 }
 
 .grades-form select:focus,
 .grades-form input:focus {
     outline: none;
-    border-color: #4f46e5;
+    border-color: #3a0ca3;
+    box-shadow: 0 0 8px rgba(58, 12, 163, 0.2);
 }
 
-/* ====== Add Grade Button (Purple Only Here) ====== */
 .grades-form button {
-    padding: 0.5rem 1rem;
+    padding: 8px 18px;
+    border-radius: 50px;
     border: none;
-    border-radius: 6px;
+    background: linear-gradient(90deg, #1C0770, #3a0ca3);
+    color: #fff;
+    font-weight: 600;
     cursor: pointer;
+    transition: 0.3s;
+}
+
+.grades-form button:hover {
+    background: linear-gradient(90deg, #3a0ca3, #1C0770);
+}
+
+.grades-form .cancel-btn {
+    background: #e74a3b;
+}
+
+.grades-form .cancel-btn:hover {
+    background: #c0392b;
+}
+
+/* ===== GRADES TABLE ===== */
+.grades-list h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.average-box {
+    margin-bottom: 15px;
+    font-size: 16px;
     font-weight: 500;
-    background-color: #4f46e5;
-    color: white;
-    transition: all 0.2s ease;
+    color: #333;
 }
 
-.grades-form button:hover:not(:disabled) {
-    background-color: #4338ca;
-    transform: translateY(-1px);
-}
-
-.grades-form button:disabled {
-    background-color: #a5b4fc;
-    cursor: not-allowed;
-}
-
-/* ====== Table ====== */
 .grades-list table {
     width: 100%;
     border-collapse: collapse;
-    border-radius: 10px;
-    overflow: hidden;
 }
 
 .grades-list th,
 .grades-list td {
-    padding: 0.6rem 0.75rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #2b2b2b;
+    padding: 8px;
     text-align: center;
     font-size: 0.9rem;
 }
 
 .grades-list th {
-    background-color: #e0e7ff;
+    background-color: #f2f2f2;
     font-weight: 600;
 }
 
-.grades-list td {
-    vertical-align: middle;
+.grades-list tr.fail td {
+    color: #e74a3b;
+    font-weight: 600;
 }
 
-.grades-list .fail {
-    background-color: #fee2e2;
-    color: #b91c1c;
-}
-
-/* ====== Average Text ====== */
-.grades-list p {
-    font-size: 0.95rem;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-}
-
-/* ====== FORCE CLEAN ACTION BUTTON STYLE ====== */
-/* This removes ANY navbar or global button style */
-
-.grades-list td button {
-    all: unset;
-    display: inline-block;
-    padding: 4px 10px;
-    font-size: 12px;
-    font-weight: 500;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 6px;
-    color: white;
-    text-align: center;
-}
-
-/* Edit Button */
-.grades-list td .edit-btn {
-    background-color: #10b981;
-}
-
-.grades-list td .edit-btn:hover {
-    background-color: #059669;
-}
-
-/* Delete Button */
-.grades-list td .delete-btn {
-    background-color: #ef4444;
-}
-
-.grades-list td .delete-btn:hover {
-    background-color: #b91c1c;
-}
-
-/* ====== LOCK ACTION BUTTON HOVER ====== */
-
-.grades-list td .edit-btn,
-.grades-list td .delete-btn {
-    all: unset;
-    display: inline-block;
-    padding: 4px 10px;
-    font-size: 12px;
-    font-weight: 500;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 6px;
-    color: white;
-}
-
-/* EDIT */
-.grades-list td .edit-btn {
-    background-color: #10b981 !important;
-}
-
-.grades-list td .edit-btn:hover {
-    background-color: #059669 !important;
-    color: white !important;
-}
-
-/* DELETE */
-.grades-list td .delete-btn {
-    background-color: #ef4444 !important;
-}
-
-.grades-list td .delete-btn:hover {
-    background-color: #b91c1c !important;
-    color: white !important;
-}
-
-/* ===== ISOLATE GRADE ACTION BUTTONS COMPLETELY ===== */
-
-.grades-list td button.edit-btn,
-.grades-list td button.delete-btn {
-    all: initial;
-    display: inline-block;
-    padding: 4px 10px;
-    font-size: 12px;
-    font-weight: 500;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 6px;
-    color: white;
+/* ===== ACTION BUTTONS IN TABLE ===== */
+.action-buttons button {
+    padding: 5px 12px;
+    border-radius: 50px;
     border: none;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 0 3px;
+    color: #fff;
 }
 
-/* EDIT */
-.grades-list td button.edit-btn {
-    background-color: #10b981;
+.edit-btn {
+    background-color: #1cc88a;
 }
 
-.grades-list td button.edit-btn:hover {
-    background-color: #059669;
-    color: white;
+.edit-btn:hover {
+    background-color: #17a673;
 }
 
-/* DELETE */
-.grades-list td button.delete-btn {
-    background-color: #ef4444;
+.delete-btn {
+    background-color: #e74a3b;
 }
 
-.grades-list td button.delete-btn:hover {
-    background-color: #b91c1c;
-    color: white;
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 700px) {
+    .grades-form {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .grades-form select,
+    .grades-form input,
+    .grades-form button {
+        width: 100%;
+    }
+
+    .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+    }
 }
