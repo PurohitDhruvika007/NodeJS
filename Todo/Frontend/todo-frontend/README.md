@@ -1,16 +1,98 @@
-# React + Vite
+# MERN Stack Todo App with JWT Authentication
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack **MERN (MongoDB, Express, React, Node.js)** Todo application with **JWT authentication**, allowing users to register, login, and manage their todos securely. Users can create, read, update, and delete todos, filter by status, and search by title.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## React Compiler
+- **User Authentication**  
+  - Register and login with JWT-based authentication  
+  - Passwords are securely hashed using bcrypt  
+  - Only logged-in users can access their todos  
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Todo Management (CRUD)**  
+  - Create new todos with **title**, **description**, and **status** (Completed/Incomplete)  
+  - Edit and update existing todos  
+  - Delete todos  
+  - All operations are user-specific (users can only manage their own todos)  
 
-## Expanding the ESLint configuration
+- **Filter & Search**  
+  - Filter todos by **status** (Completed / Incomplete / All)  
+  - Search todos by **title**  
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Frontend**  
+  - Built with **React.js**  
+  - Responsive and interactive dashboard  
+  - Add, edit, and delete todos in real-time  
+  - Automatically updates todo list after actions  
+
+- **Backend**  
+  - **Node.js + Express**  
+  - **MongoDB** for database  
+  - JWT middleware for protected routes  
+  - RESTful API for todo operations  
+
+- **Bonus Features**  
+  - Logout functionality  
+  - Loading and error handling  
+  - Environment variables managed with `.env`  
+
+---
+
+## 📦 Tech Stack
+
+- **Frontend:** React.js, Axios  
+- **Backend:** Node.js, Express.js, JWT, Bcrypt  
+- **Database:** MongoDB, Mongoose  
+- **Others:** dotenv, CORS  
+
+---
+
+## 📂 Folder Structure
+<pre>
+Todo/
+│
+├─ backend/
+│  ├─ controllers/
+│  │  ├─ authControllers.js
+│  │  └─ todoControllers.js
+│  ├─ middleware/
+│  │  └─ authMiddleware.js
+│  ├─ models/
+│  │  ├─ authModel.js
+│  │  └─ todoModel.js
+│  ├─ routes/
+│  │  ├─ authRoutes.js
+│  │  └─ todoRoutes.js
+│  ├─ config/
+│  │  └─ db.js
+│  ├─ server.js
+│  └─ .env
+│
+├─ frontend/
+│  ├─ src/
+│  │  ├─ components/
+│  │  │  └─ TodoItem/
+│  │  ├─ pages/
+│  │  │  └─ Dashboard/
+│  │  │  └─ Login/
+│  │  │  └─ Register/
+│  │  └─ App.jsx
+│  └─ package.json
+└─ README.md
+</pre>
+
+## 🖥 Usage
+- Register a new account
+- Login with your credentials
+
+- Add todos with title, description, and status
+
+- Edit or delete todos
+
+- Filter by Completed / Incomplete
+
+- Search todos by title
+
+## 🎥 video
