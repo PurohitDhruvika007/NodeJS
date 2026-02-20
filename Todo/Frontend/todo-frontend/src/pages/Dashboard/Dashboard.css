@@ -1,0 +1,245 @@
+/* Dashboard.css */
+
+/* Wrapper */
+.dashboard-wrapper {
+    min-height: 100vh;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* Main card */
+.dashboard-card {
+    background: #fff;
+    width: 100%;
+    max-width: 1000px;
+    padding: 30px 25px;
+    border-radius: 25px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.dashboard-card h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+    font-weight: 700;
+}
+
+/* Top bar */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.logout-btn {
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    background: linear-gradient(90deg, #a6c1ee 0%, #fbc2eb 100%);
+    color: #fff;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background: linear-gradient(90deg, #fbc2eb 0%, #a6c1ee 100%);
+}
+
+/* Add / Update Form */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr auto;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.form-row input,
+.form-row select {
+    padding: 12px 15px;
+    border-radius: 15px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.form-row input:focus,
+.form-row select:focus {
+    border-color: #a6c1ee;
+    box-shadow: 0 0 5px rgba(166, 193, 238, 0.5);
+}
+
+.add-update-btn {
+    padding: 12px 25px;
+    border-radius: 25px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    background: linear-gradient(90deg, #a6c1ee 0%, #fbc2eb 100%);
+    color: #fff;
+    transition: 0.3s;
+}
+
+.add-update-btn:hover {
+    background: linear-gradient(90deg, #fbc2eb 0%, #a6c1ee 100%);
+}
+
+/* Search / Filter */
+.search-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.search-row input,
+.search-row select {
+    padding: 12px 15px;
+    border-radius: 15px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.search-row input:focus,
+.search-row select:focus {
+    border-color: #a6c1ee;
+    box-shadow: 0 0 5px rgba(166, 193, 238, 0.5);
+}
+
+/* Todo List Grid */
+.todo-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Todo Card */
+.todo-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #fefefe;
+    border-radius: 20px;
+    padding: 20px;
+    min-height: 180px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    transition: 0.3s;
+}
+
+.todo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Content inside card */
+.todo-content {
+    flex-grow: 1;
+}
+
+.todo-title {
+    font-weight: 700;
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+    word-break: break-word;
+}
+
+.todo-desc {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+    word-break: break-word;
+}
+
+/* Status badge */
+.todo-status {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 15px;
+    width: fit-content;
+    margin-bottom: 15px;
+}
+
+.todo-status.completed {
+    background-color: #4caf50;
+    /* green */
+}
+
+.todo-status.incomplete {
+    background-color: #f44336;
+    /* red */
+}
+
+/* Actions */
+.todo-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.todo-actions button {
+    flex: 1;
+    padding: 10px;
+    margin-left: 8px;
+    border-radius: 15px;
+    border: none;
+
+    font-weight: 600;
+    cursor: pointer;
+    color: #fff;
+    transition: 0.3s;
+}
+
+.todo-actions .edit-btn {
+    background: #2196f3;
+}
+
+.todo-actions .edit-btn:hover {
+    background: #1976d2;
+}
+
+.todo-actions .delete-btn {
+    background: #f44336;
+}
+
+.todo-actions .delete-btn:hover {
+    background: #d32f2f;
+}
+
+/* No todos */
+.no-todos {
+    text-align: center;
+    font-size: 16px;
+    color: #555;
+}
+
+/* Todo List Grid */
+.todo-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    /* 3 cards in a row if space */
+    gap: 20px;
+    /* space between cards */
+    margin-top: 20px;
+}
+
+.todo-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #fefefe;
+    border-radius: 20px;
+    padding: 20px;
+    min-height: 180px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    transition: 0.3s;
+}

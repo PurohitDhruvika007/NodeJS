@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import TodoItem from "../../components/TodoItem/TodoItem.jsx";
 import { useNavigate } from "react-router";
+import './Dashboard.css';
 
 export default function Dashboard() {
     const [todos, setTodos] = useState([]);
@@ -13,164 +13,139 @@ export default function Dashboard() {
     const [filter, setFilter] = useState("all");
     const navigate = useNavigate();
 
-    // Fetch todos
+    useEffect(() => { fetchTodos(); }, []);
+
     const fetchTodos = async () => {
         try {
-            const res = await axios.get("http://localhost:4000/api/todo", {
-                withCredentials: true,
-            });
-
-            if (!res.data.status) {
-                navigate("/login");
-            } else {
-                setTodos(res.data.data);
-            }
-        } catch (err) {
-            console.log(err);
-        }
+            const res = await axios.get("http://localhost:4000/api/todo", { withCredentials: true });
+            if (!res.data.status) navigate("/login");
+            else setTodos(res.data.data);
+        } catch (err) { console.log(err); }
     };
 
-    useEffect(() => {
-        fetchTodos();
-    }, []);
-
-    // Add or Update
     const handleAddOrUpdate = async () => {
-        if (!title) return alert("Title is required");
+        if (!title) return alert("Title required");
 
         try {
+            const payload = {
+                title,
+                description,
+                Completed: status === "completed" // ✅ Use the correct field name
+            };
+
+            let res;
             if (editingId) {
-                // Update todo
-                const res = await axios.put(
+                // Update
+                res = await axios.put(
                     `http://localhost:4000/api/todo/${editingId}`,
-                    { title, description, completed: status === "completed" },
+                    payload,
                     { withCredentials: true }
                 );
-
-                if (res.data.status) {
-                    // Update state immediately
-                    setTodos((prevTodos) =>
-                        prevTodos.map((todo) =>
-                            todo._id === editingId ? res.data.data : todo
-                        )
-                    );
-                } else {
-                    alert(res.data.message);
-                }
+                if (res.data.status)
+                    setTodos(prev => prev.map(t => t._id === editingId ? res.data.data : t));
+                else alert(res.data.message);
             } else {
-                // Add new todo
-                const res = await axios.post(
+                // Add
+                res = await axios.post(
                     "http://localhost:4000/api/todo",
-                    { title, description, completed: status === "completed" },
+                    payload,
                     { withCredentials: true }
                 );
-
-                if (res.data.status) {
-                    setTodos((prevTodos) => [...prevTodos, res.data.data]);
-                } else {
-                    alert(res.data.message);
-                }
+                if (res.data.status) setTodos(prev => [...prev, res.data.data]);
+                else alert(res.data.message);
             }
 
+            // Reset form
             setTitle("");
             setDescription("");
             setStatus("incomplete");
             setEditingId(null);
+
         } catch (err) {
             console.log(err);
-            alert("Something went wrong. Check console.");
+            alert("Something went wrong");
         }
     };
 
-    // Edit todo
-    const handleEdit = (todo) => {
+    const handleEdit = todo => {
         setEditingId(todo._id);
         setTitle(todo.title);
         setDescription(todo.description);
-        setStatus(todo.Completed ? "completed" : "incomplete");
+        setStatus(todo.Completed ? "completed" : "incomplete"); // ✅ Correctly set status from boolean
     };
 
-    // Delete todo
-    const handleDelete = async (id) => {
+    const handleDelete = async id => {
         try {
-            await axios.delete(`http://localhost:4000/api/todo/${id}`, {
-                withCredentials: true,
-            });
-            setTodos((prevTodos) => prevTodos.filter((todo) => todo._id !== id));
-        } catch (err) {
-            console.log(err);
-        }
+            await axios.delete(`http://localhost:4000/api/todo/${id}`, { withCredentials: true });
+            setTodos(prev => prev.filter(t => t._id !== id));
+        } catch (err) { console.log(err); }
     };
 
-    // Logout
     const logout = async () => {
         await axios.post("http://localhost:4000/api/auth/logout", {}, { withCredentials: true });
         navigate("/login");
     };
 
-    // Filter + search
     const filteredTodos = todos
-        .filter((todo) => todo.title.toLowerCase().includes(search.toLowerCase()))
-        .filter((todo) => {
-            if (filter === "completed") return todo.Completed;
-            if (filter === "incomplete") return !todo.Completed;
+        .filter(t => t.title.toLowerCase().includes(search.toLowerCase()))
+        .filter(t => {
+            if (filter === "completed") return t.Completed === true;   // ✅ use boolean
+            if (filter === "incomplete") return t.Completed === false; // ✅ use boolean
             return true;
         });
 
     return (
-        <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
-            <h2>Todo Dashboard</h2>
-            <button onClick={logout} style={{ marginBottom: "20px" }}>Logout</button>
+        <div className="dashboard-wrapper">
+            <div className="dashboard-card">
+                <div className="top-bar">
+                    <h2>Todo Dashboard</h2>
+                    <button className="logout-btn" onClick={logout}>Logout</button>
+                </div>
 
-            {/* Add / Update */}
-            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-                <input
-                    style={{ flex: 1 }}
-                    placeholder="Enter Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                />
-                <input
-                    style={{ flex: 2 }}
-                    placeholder="Enter Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                />
-                <select value={status} onChange={(e) => setStatus(e.target.value)}>
-                    <option value="incomplete">Incomplete</option>
-                    <option value="completed">Completed</option>
-                </select>
-                <button onClick={handleAddOrUpdate}>{editingId ? "Update" : "Add"}</button>
+                {/* Add / Update Form */}
+                <div className="form-row">
+                    <input placeholder="Title" value={title} onChange={e => setTitle(e.target.value)} />
+                    <input placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
+                    <select value={status} onChange={e => setStatus(e.target.value)}>
+                        <option value="incomplete">Incomplete</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                    <button className="add-update-btn" onClick={handleAddOrUpdate}>{editingId ? "Update" : "Add"}</button>
+                </div>
+
+                {/* Search / Filter */}
+                <div className="search-row">
+                    <input placeholder="Search..." value={search} onChange={e => setSearch(e.target.value)} />
+                    <select value={filter} onChange={e => setFilter(e.target.value)}>
+                        <option value="all">All</option>
+                        <option value="completed">Completed</option>
+                        <option value="incomplete">Incomplete</option>
+                    </select>
+                </div>
+
+                {/* Todo List */}
+                <div className="todo-list">
+                    {filteredTodos.length === 0 ? <p className="no-todos">No todos found</p> :
+                        filteredTodos.map(todo => (
+                            <div className="todo-card" key={todo._id}>
+                                <div className="todo-content">
+                                    <div className="todo-title">{todo.title}</div>
+                                    <div className="todo-desc">{todo.description || "No description"}</div>
+                                    <div className={`todo-status ${todo.Completed ? "completed" : "incomplete"}`}>
+                                        {todo.Completed ? "Completed" : "Incomplete"}
+                                    </div>
+                                </div>
+                                <div className="todo-actions">
+                                    <div>
+                                        <button className="edit-btn" onClick={() => handleEdit(todo)}>Edit</button>
+                                        <button className="delete-btn" onClick={() => handleDelete(todo._id)}>Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
             </div>
-
-            {/* Search + Filter */}
-            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-                <input
-                    style={{ flex: 1 }}
-                    placeholder="Search by title..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                />
-                <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-                    <option value="all">All</option>
-                    <option value="completed">Completed</option>
-                    <option value="incomplete">Incomplete</option>
-                </select>
-            </div>
-
-            {/* Todo list */}
-            {filteredTodos.length === 0 ? (
-                <p>No todos found</p>
-            ) : (
-                filteredTodos.map((todo) => (
-                    <TodoItem
-                        key={todo._id}
-                        todo={todo}
-                        handleEdit={handleEdit}
-                        handleDelete={handleDelete}
-                    />
-                ))
-            )}
         </div>
     );
 }
