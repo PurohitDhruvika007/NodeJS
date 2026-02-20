@@ -86,13 +86,12 @@ Todo/
 ## 🖥 Usage
 - Register a new account
 - Login with your credentials
-
 - Add todos with title, description, and status
-
 - Edit or delete todos
-
 - Filter by Completed / Incomplete
-
 - Search todos by title
 
 ## 🎥 video
+
+https://github.com/user-attachments/assets/fe6e2a50-237d-4880-8c57-58dc02873f51
+
